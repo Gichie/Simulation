@@ -1,13 +1,13 @@
 from project.Simulation.actions import Actions
 from project.Simulation.Map import Map
 from project.setting import Setting
+from project.Simulation.render import Render
 
 
 class Simulation:
     Actions.creature()
     map = Map(Setting().width, Setting().height)
-    map.create_map()
-    map.display_map()
+    Render.display(Map, map.create_map())
 
 
 

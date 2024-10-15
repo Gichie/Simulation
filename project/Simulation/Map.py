@@ -15,6 +15,7 @@ class Map:
                 self.map[(i, j)] = '(..)'
         for el in CreatingObjects.creating_objects:
             self.map[(el.y, el.x)] = el.name
+        return self.map
 
 
     def display_map(self):
@@ -25,7 +26,6 @@ class Map:
 
 
 if __name__ == '__main__':
-    map = Map(5, 5)
     Actions.creature()
     map = Map(Setting().width, Setting().height)
     map.create_map()

@@ -1,8 +1,8 @@
 class Setting:
     '''Настройка симуляции'''
-    width = 3
-    height = 3
-    count_grass = 0
+    width = 4
+    height = 4
+    count_grass = 1
     count_rock = 0
     count_tree = 0
     count_herbivore = 1
