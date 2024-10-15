@@ -1,4 +1,4 @@
-from project.Simulation.Actions import Actions
+from project.Simulation.actions import Actions
 from project.Simulation.Map import Map
 from project.setting import Setting
 

@@ -8,6 +8,7 @@ class Predator(Creature):
     def __init__(self, x, y, speed: int, hp: int, strengh: int):
         super().__init__(x,y, speed, hp)
         self.strengh = strengh
+        self.name = "Pred"
 
     def make_move(self):
         pass
