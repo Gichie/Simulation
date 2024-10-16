@@ -1,5 +1,5 @@
-from project.Simulation.CreatingObjects import CreatingObjects
-from project.Simulation.actions import Actions
+from project.simulation.CreatingObjects import CreatingObjects
+from project.simulation.actions import Actions
 from project.setting import Setting
 
 class Map:
@@ -16,17 +16,3 @@ class Map:
         for el in CreatingObjects.creating_objects:
             self.map[(el.y, el.x)] = el.name
         return self.map
-
-
-    def display_map(self):
-        for i in range(self.height):
-            for j in range(self.width):
-                print(f'{self.map[(i, j)]:^5}', end='')
-            print()
-
-
-if __name__ == '__main__':
-    Actions.creature()
-    map = Map(Setting().width, Setting().height)
-    map.create_map()
-    map.display_map()

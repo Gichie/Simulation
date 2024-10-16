@@ -1,9 +1,9 @@
-from project.Entity.Creatures.Herbivore import Herbivore
+from project.Entity.Creatures.herbivore import Herbivore
 from project.Entity.Creatures.Predator import Predator
 from project.Entity.Static_objects.Grass import Grass
 from project.Entity.Static_objects.Rock import Rock
 from project.Entity.Static_objects.Tree import Tree
-from project.Simulation.CreatingObjects import CreatingObjects
+from project.simulation.CreatingObjects import CreatingObjects
 from project.setting import Setting
 from random import shuffle
 
@@ -24,6 +24,7 @@ class Actions:
         cls.create_rocks()
         cls.create_trees()
         cls.create_predators()
+
 
     @staticmethod
     def create_grasses():

@@ -6,4 +6,4 @@ class Herbivore(Creature):
         super().__init__(x,y, speed, hp)
         self.name = 'Herb'
     def make_move(self):
-        pass
+        self.x += 1

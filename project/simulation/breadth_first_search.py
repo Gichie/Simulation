@@ -1,6 +1,9 @@
 from collections import deque
-from project.Simulation.Map import Map
-from project.Simulation.actions import Actions
+from project.simulation.Map import Map
+from project.simulation.actions import Actions
+from project.setting import Setting
+from project.simulation.render import Render
+
 
 class Bfs:
     def __init__(self, start):
@@ -16,8 +19,8 @@ class Bfs:
             self.visited.add(current)
 
             entity = map.map.get(current)
-            if entity and entity != '(..)':
-                self.found_objects[current] = entity
+            if entity and entity in ('Herb', 'Grss', 'Tree', 'Rock'):
+                self.found_objects[current[::-1]] = entity
 
             for x,y in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
                 neighbor = (current[0] + x, current[1] + y)
@@ -29,12 +32,10 @@ class Bfs:
 
 if __name__ == '__main__':
     Actions.creature()
-    map = Map()
-    map.create_map()
-    map.display_map()
+    map = Map(Setting().width, Setting().height)
+    Render.display(Map, map.create_map())
     b = Bfs((0,0))
-    b.bfs()
-    print(b.found_objects)
+    print(b.bfs())
 
     
 
