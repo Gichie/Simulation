@@ -3,7 +3,7 @@ from project.Entity.Creatures.Predator import Predator
 from project.Entity.Static_objects.Grass import Grass
 from project.Entity.Static_objects.Rock import Rock
 from project.Entity.Static_objects.Tree import Tree
-from project.simulation.CreatingObjects import CreatingObjects
+from project.simulation.creatingObjects import CreatingObjects
 from project.setting import Setting
 from random import shuffle
 
@@ -58,6 +58,9 @@ class Actions:
     @staticmethod
     def create_predators():
         for i in range(Setting.count_predator):
-            x, y = __class__.CreateCoordsCreatures.coords.pop()
-            predator = Predator(x, y, Setting.speed, Setting.hp, Setting.pred_strength)
-            CreatingObjects.creating_objects.append(predator)
+            if __class__.CreateCoordsCreatures.coords:
+                x, y = __class__.CreateCoordsCreatures.coords.pop()
+                predator = Predator(x, y, Setting.speed, Setting.hp, Setting.pred_strength)
+                CreatingObjects.creating_objects.append(predator)
+            else:
+                break

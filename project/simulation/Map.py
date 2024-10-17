@@ -1,4 +1,4 @@
-from project.simulation.CreatingObjects import CreatingObjects
+from project.simulation.creatingObjects import CreatingObjects
 from project.simulation.actions import Actions
 from project.setting import Setting
 
