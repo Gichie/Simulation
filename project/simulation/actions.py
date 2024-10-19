@@ -20,10 +20,11 @@ class Actions:
     @classmethod
     def creature(cls):
         cls.create_herbivores()
+        cls.create_predators()
         cls.create_grasses()
         cls.create_rocks()
         cls.create_trees()
-        cls.create_predators()
+
 
 
     @staticmethod

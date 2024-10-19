@@ -3,6 +3,7 @@ from project.simulation.Map import Map
 from project.simulation.actions import Actions
 from project.setting import Setting
 from project.simulation.render import Render
+from project.simulation.creatingObjects import CreatingObjects
 
 
 class Bfs:
@@ -20,16 +21,20 @@ class Bfs:
                 continue
             self.visited.add(current)
 
-            entity = map.map.get(current)
-            if entity and entity in ('Herb', 'Grss', 'Tree', 'Rock'):
-                self.found_objects[current[::-1]] = entity
+            if map.map.get(current) not in ('(..)', 'Grss'):
+                continue
+
+            '''if entity and entity not in ('(..)', 'Grss'):
+                self.found_objects[current[::-1]] = entity'''
 
             if current == goal:                               # Проверка на достижение цели
                 return self.construct_path(self.start, goal)  # Построение пути
 
             for x,y in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
                 neighbor = (current[0] + x, current[1] + y)
+
                 if neighbor in map.map and neighbor not in self.visited:
+
                     self.queue.append(neighbor)
                     self.parent[neighbor] = current
         return self.found_objects
@@ -47,14 +52,14 @@ class Bfs:
         return path
 
 
-
-
 if __name__ == '__main__':
     Actions.creature()
-    map = Map(Setting().width, Setting().height)
+    herb = CreatingObjects.creating_objects[0]
+    grass = CreatingObjects.creating_objects[2]
+    map = Map(Setting.width, Setting.height)
     Render.display(Map, map.create_map())
-    b = Bfs((0,0))
-    print(b.bfs((2,2)))
+    b = Bfs((herb.x, herb.y))
+    print(b.bfs((grass.x, grass.y)))
 
 
     
