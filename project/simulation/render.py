@@ -2,8 +2,15 @@ from project.setting import Setting
 
 class Render:
     def display(self, map: dict):
-        for i in range(Setting.width):
-            for j in range(Setting.height):
-                print(f'{map[(i, j)]:^5}', end='')
-            print()
+        # Создаем пустую матрицу с нужным количеством строк и столбцов
+        grid = []
+        for y in range(Setting.height):
+            row = []
+            for x in range(Setting.width):
+                row.append(map.get((x,y), '(..)' ))  # Получаем элемент или '(..)', если элемента нет
+            grid.append(" ".join(row))  # Объединяем строку через пробел
+
+        # Выводим карту
+        for line in grid:
+            print(line)
 

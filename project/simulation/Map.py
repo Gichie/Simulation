@@ -14,5 +14,5 @@ class Map:
             for j in range(self.height):
                 self.map[(i, j)] = '(..)'
         for el in CreatingObjects.creating_objects:
-            self.map[(el.y, el.x)] = el.name
+            self.map[(el.x, el.y)] = el.name
         return self.map

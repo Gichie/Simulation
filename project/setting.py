@@ -1,12 +1,12 @@
 class Setting:
     '''Настройка симуляции'''
-    width = 5
-    height = 4
-    count_grass = 1
-    count_rock = 1
+    width = 6
+    height = 5
+    count_grass = 2
+    count_rock = 2
     count_tree = 1
-    count_herbivore = 1
-    count_predator = 1
+    count_herbivore = 2
+    count_predator = 2
     speed = 1
     hp = 10
     pred_strength = 5

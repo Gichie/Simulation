@@ -12,7 +12,7 @@ class Actions:
     '''Список действий, исполняемых перед стартом симуляции или на каждом ходу '''
 
     class CreateCoordsCreatures:
-        coords = [(i,j) for j in range(Setting.width) for i in range(Setting.height)]
+        coords = [(i,j) for j in range(Setting.height) for i in range(Setting.width)]
         shuffle(coords)
         # Отображение распределенных координат в случайном порядке
         # print(coords)
@@ -24,7 +24,6 @@ class Actions:
         cls.create_grasses()
         cls.create_rocks()
         cls.create_trees()
-
 
 
     @staticmethod
@@ -55,6 +54,7 @@ class Actions:
             x, y = __class__.CreateCoordsCreatures.coords.pop()
             herbivore = Herbivore(x, y, Setting.speed, Setting.hp)
             CreatingObjects.creating_objects.append(herbivore)
+            CreatingObjects.moving_creatures.append(herbivore)
 
     @staticmethod
     def create_predators():
@@ -63,5 +63,6 @@ class Actions:
                 x, y = __class__.CreateCoordsCreatures.coords.pop()
                 predator = Predator(x, y, Setting.speed, Setting.hp, Setting.pred_strength)
                 CreatingObjects.creating_objects.append(predator)
+                CreatingObjects.moving_creatures.append(predator)
             else:
                 break

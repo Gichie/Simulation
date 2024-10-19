@@ -7,37 +7,33 @@ from project.simulation.creatingObjects import CreatingObjects
 
 
 class Bfs:
-    def __init__(self, start):
+    def __init__(self, start, map):
         self.queue = deque([start])
         self.visited = set()
         self.found_objects = dict()
         self.parent = dict()
         self.start = start
+        self.map = map
 
-    def bfs(self, goal=None):
+    def bfs(self, goal):
+
         while self.queue:
             current = self.queue.popleft()
             if current in self.visited:
                 continue
             self.visited.add(current)
 
-            if map.map.get(current) not in ('(..)', 'Grss'):
-                continue
-
-            '''if entity and entity not in ('(..)', 'Grss'):
-                self.found_objects[current[::-1]] = entity'''
-
-            if current == goal:                               # Проверка на достижение цели
-                return self.construct_path(self.start, goal)  # Построение пути
+            if self.map.map.get(current) == goal:                               # Проверка на достижение цели
+                return self.construct_path(self.start, current)                    # Построение пути
 
             for x,y in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
                 neighbor = (current[0] + x, current[1] + y)
 
-                if neighbor in map.map and neighbor not in self.visited:
-
+                if neighbor in self.map.map and neighbor not in self.visited and self.map.map.get(neighbor) in ('(..)', goal):
                     self.queue.append(neighbor)
                     self.parent[neighbor] = current
-        return self.found_objects
+        print('Невозможно проложить путь до цели')
+
 
     def construct_path(self, start, goal):
         path = []
@@ -51,15 +47,19 @@ class Bfs:
         path.reverse()
         return path
 
-
-if __name__ == '__main__':
+'''if __name__ == '__main__':
     Actions.creature()
+    print(CreatingObjects.creating_objects)
     herb = CreatingObjects.creating_objects[0]
-    grass = CreatingObjects.creating_objects[2]
+    grass = CreatingObjects.creating_objects[3]
     map = Map(Setting.width, Setting.height)
     Render.display(Map, map.create_map())
     b = Bfs((herb.x, herb.y))
-    print(b.bfs((grass.x, grass.y)))
+    b2 = Bfs((herb.x, herb.y))
+    print(b.bfs((grass.x, grass.y)))'''
+
+
+
 
 
     
