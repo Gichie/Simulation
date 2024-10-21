@@ -4,6 +4,8 @@ from project.Entity.Static_objects.Grass import Grass
 from project.Entity.Static_objects.Rock import Rock
 from project.Entity.Static_objects.Tree import Tree
 from project.simulation.creatingObjects import CreatingObjects
+from project.simulation.breadth_first_search import Bfs
+from project.simulation.Map import Map
 from project.setting import Setting
 from random import shuffle
 
@@ -66,3 +68,4 @@ class Actions:
                 CreatingObjects.moving_creatures.append(predator)
             else:
                 break
+

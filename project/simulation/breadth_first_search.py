@@ -1,10 +1,4 @@
 from collections import deque
-from project.simulation.Map import Map
-from project.simulation.actions import Actions
-from project.setting import Setting
-from project.simulation.render import Render
-from project.simulation.creatingObjects import CreatingObjects
-
 
 class Bfs:
     def __init__(self, start, map):
@@ -32,7 +26,6 @@ class Bfs:
                 if neighbor in self.map.map and neighbor not in self.visited and self.map.map.get(neighbor) in ('(..)', goal):
                     self.queue.append(neighbor)
                     self.parent[neighbor] = current
-        print('Невозможно проложить путь до цели')
 
 
     def construct_path(self, start, goal):
@@ -45,18 +38,8 @@ class Bfs:
                 return None
         path.append(start)
         path.reverse()
-        return path
+        return path[:2]
 
-'''if __name__ == '__main__':
-    Actions.creature()
-    print(CreatingObjects.creating_objects)
-    herb = CreatingObjects.creating_objects[0]
-    grass = CreatingObjects.creating_objects[3]
-    map = Map(Setting.width, Setting.height)
-    Render.display(Map, map.create_map())
-    b = Bfs((herb.x, herb.y))
-    b2 = Bfs((herb.x, herb.y))
-    print(b.bfs((grass.x, grass.y)))'''
 
 
 

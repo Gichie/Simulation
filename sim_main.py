@@ -5,8 +5,6 @@ from project.simulation.render import Render
 from project.simulation.creature_moves import CreatureMove
 
 
-
-
 class Simulation:
     def __init__(self):
         Actions.creature()
@@ -14,10 +12,19 @@ class Simulation:
         Render.display(self.map, self.map.create_map())
 
 
+    def next_step(self):
+        '''Метод для симуляции и рендеринга одного хода для всех существ'''
+        CreatureMove(sim.map).moves()
+        print()
+
+
+
+
+
 if __name__ == '__main__':
     sim = Simulation()
-    creature_move = CreatureMove(sim.map)
-    creature_move.moves()
+    sim.next_step()
+
 
 
 

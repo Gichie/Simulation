@@ -1,6 +1,5 @@
 from project.simulation.creatingObjects import CreatingObjects
-from project.simulation.actions import Actions
-from project.setting import Setting
+
 
 class Map:
     '''Карта, содержит в себе коллекцию в виде хеш-таблицы(словаря) для хранения существ(значение) и их расположения(ключ).'''

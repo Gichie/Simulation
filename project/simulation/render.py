@@ -1,6 +1,9 @@
 from project.setting import Setting
 
 class Render:
+    def __init__(self, map):
+        self.map = map
+
     def display(self, map: dict):
         # Создаем пустую матрицу с нужным количеством строк и столбцов
         grid = []
