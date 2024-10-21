@@ -8,10 +8,10 @@ class Map:
         self.width = width
         self.height = height
 
-    def create_map(self):
+    def create_map(self, creating_objects):
         for i in range(self.width):
             for j in range(self.height):
                 self.map[(i, j)] = '(..)'
-        for el in CreatingObjects.creating_objects:
+        for el in creating_objects.creating_objects:
             self.map[(el.x, el.y)] = el.name
         return self.map

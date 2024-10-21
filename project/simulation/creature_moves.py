@@ -9,8 +9,12 @@ class CreatureMove:
 
     def update_map(self, creature_name):
         print(self.__path_of_animal)
-        self.map.map[self.__path_of_animal[0]] = '(..)'
-        self.map.map[self.__path_of_animal[1]] = creature_name
+        if len(self.__path_of_animal) == 2:
+            self.map.map[self.__path_of_animal[1]] = '(..)'
+        else:
+            self.map.map[self.__path_of_animal[0]] = '(..)'
+            self.map.map[self.__path_of_animal[1]] = creature_name
+
 
     def moves(self):
         goals = {'Herb': 'Grss', 'Pred': 'Herb'}
@@ -22,7 +26,6 @@ class CreatureMove:
             else:
                 self.update_map(creature.name)
                 print()
-
                 Render(self.map).display(self.map.map)
 
 

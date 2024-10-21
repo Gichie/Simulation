@@ -1,3 +1,4 @@
 class CreatingObjects:
-    creating_objects = []
-    moving_creatures = []
+    def __init__(self):
+        self.creating_objects = []
+        self.moving_creatures = []

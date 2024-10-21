@@ -38,7 +38,7 @@ class Bfs:
                 return None
         path.append(start)
         path.reverse()
-        return path[:2]
+        return path
 
 
 
