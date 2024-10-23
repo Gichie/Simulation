@@ -15,8 +15,7 @@ class Simulation:
 
     def next_step(self):
         '''Метод для симуляции и рендеринга одного хода для всех существ'''
-
-
+        print(CreatingObjects.moving_creatures)
         CreatureMove(sim.map).moves()
         print()
 

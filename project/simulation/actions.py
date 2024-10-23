@@ -1,20 +1,15 @@
-from project.Entity.Creatures.Creature import Creature
 from project.Entity.Creatures.herbivore import Herbivore
 from project.Entity.Creatures.Predator import Predator
 from project.Entity.Static_objects.Grass import Grass
 from project.Entity.Static_objects.Rock import Rock
 from project.Entity.Static_objects.Tree import Tree
 from project.simulation.creatingObjects import CreatingObjects
-from project.simulation.breadth_first_search import Bfs
-from project.simulation.Map import Map
 from project.setting import Setting
 from random import shuffle
 
 
 class Actions:
     '''Список действий, исполняемых перед стартом симуляции или на каждом ходу '''
-    def __init__(self):
-        self._creating_objects = CreatingObjects()
 
 
     class CreateCoordsCreatures:
@@ -25,52 +20,32 @@ class Actions:
 
 
     def creature(self):
-        self.create_herbivores(self._creating_objects)
-        self.create_predators(self._creating_objects)
-        self.create_grasses(self._creating_objects)
-        self.create_rocks(self._creating_objects)
-        self.create_trees(self._creating_objects)
-        return self._creating_objects
-
+        self.create_object('Grss', Setting.count_grass)
+        self.create_object('Rock', Setting.count_rock)
+        self.create_object('Tree', Setting.count_tree)
+        self.create_object('Herb', Setting.count_herbivore, Setting.speed, Setting.hp)
+        self.create_object('Pred', Setting.count_predator, Setting.speed, Setting.hp, Setting.pred_strength)
 
     @staticmethod
-    def create_grasses(creating_objects):
-        for i in range(Setting.count_grass):
-            x, y = __class__.CreateCoordsCreatures.coords.pop()
-            grass = Grass(x, y)
-            creating_objects.creating_objects.append(grass)
-
-    @staticmethod
-    def create_rocks(creating_objects):
-        for i in range(Setting.count_rock):
-            x, y = __class__.CreateCoordsCreatures.coords.pop()
-            rock = Rock(x, y)
-            creating_objects.creating_objects.append(rock)
-
-    @staticmethod
-    def create_trees(creating_objects):
-        for i in range(Setting.count_tree):
-            x, y = __class__.CreateCoordsCreatures.coords.pop()
-            tree = Tree(x, y)
-            creating_objects.creating_objects.append(tree)
-
-    @staticmethod
-    def create_herbivores(creating_objects):
-        '''Метод для создания травоядных существ'''
-        for i in range(Setting.count_herbivore):
-            x, y = __class__.CreateCoordsCreatures.coords.pop()
-            herbivore = Herbivore(x, y, Setting.speed, Setting.hp)
-            creating_objects.creating_objects.append(herbivore)
-            creating_objects.moving_creatures.append(herbivore)
-
-    @staticmethod
-    def create_predators(creating_objects):
-        for i in range(Setting.count_predator):
-            if __class__.CreateCoordsCreatures.coords:
-                x, y = __class__.CreateCoordsCreatures.coords.pop()
-                predator = Predator(x, y, Setting.speed, Setting.hp, Setting.pred_strength)
-                creating_objects.creating_objects.append(predator)
-                creating_objects.moving_creatures.append(predator)
+    def create_object(object_type, count, *args):
+        for i in range(count):
+            x, y = __class__.CreateCoordsCreatures.coords.pop() \
+            # Создание объекта в зависимости от переданного типа
+            if object_type == 'Grss':
+                obj = Grass(x, y)
+            elif object_type == 'Rock':
+                obj = Rock(x, y)
+            elif object_type == 'Tree':
+                obj = Tree(x, y)
+            elif object_type == 'Herb':
+                obj = Herbivore(x, y, *args)
+            elif object_type == 'Pred':
+                obj = Predator(x, y, *args)
             else:
-                break
+                raise ValueError(f"Unknown object type: {object_type}")
 
+            CreatingObjects.creating_objects.append(obj)
+
+            # Добавляем в движущиеся существа, если это травоядное или хищник
+            if object_type in ['Herb', 'Pred']:
+                CreatingObjects.moving_creatures.append(obj)
