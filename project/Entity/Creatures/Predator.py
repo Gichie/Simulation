@@ -1,4 +1,5 @@
 from project.Entity.Creatures.Creature import Creature
+from project.simulation.creatingObjects import CreatingObjects
 
 class Predator(Creature):
     '''Хищник. На что может потратить ход хищник:
@@ -10,5 +11,14 @@ class Predator(Creature):
         self.strengh = strengh
         self.name = "Pred"
 
-    def make_move(self):
-        pass
+    def make_move(self, path_of_animal: list, map: dict):
+        if len(path_of_animal) == 2:
+            map[path_of_animal[1]] = '(..)'
+            print(f'{self} съел Herb')
+            x, y = path_of_animal[1]
+            CreatingObjects.remove_creature(x, y)
+        else:
+            map[path_of_animal[0]] = '(..)'
+            map[path_of_animal[1]] = self.name
+            print(f'{self} походил -> {path_of_animal[1]}')
+            self.x, self.y = path_of_animal[1]

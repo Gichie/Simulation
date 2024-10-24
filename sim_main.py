@@ -4,6 +4,7 @@ from project.setting import Setting
 from project.simulation.render import Render
 from project.simulation.creature_moves import CreatureMove
 from project.simulation.creatingObjects import CreatingObjects
+from project.simulation.move_counter import MoveCounter
 
 class Simulation:
     def __init__(self):
@@ -14,11 +15,16 @@ class Simulation:
 
 
     def next_step(self):
+        print(CreatingObjects.creating_objects)
+        print(CreatingObjects.moving_creatures)
+        print(CreatingObjects.grasses)
         '''Метод для симуляции и рендеринга одного хода для всех существ'''
-        print(CreatingObjects.moving_creatures)
-        CreatureMove(sim.map).moves()
-        print()
-        print(CreatingObjects.moving_creatures)
+        for i in range(2):
+            CreatureMove(sim.map).moves()
+            print(MoveCounter.move_counter())
+
+
+
 
 
 if __name__ == '__main__':
