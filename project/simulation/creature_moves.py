@@ -7,13 +7,19 @@ class CreatureMove:
         self.map = map
 
 
-    def update_map(self, creature_name):
+    def update_map(self, creature):
         print(self.__path_of_animal)
         if len(self.__path_of_animal) == 2:
             self.map.map[self.__path_of_animal[1]] = '(..)'
+            print(f'{creature.name} насытился')
+            x,y = self.__path_of_animal[1]
+            if creature.name == 'Pred':
+                CreatingObjects.remove_creature(x,y)
         else:
             self.map.map[self.__path_of_animal[0]] = '(..)'
-            self.map.map[self.__path_of_animal[1]] = creature_name
+            self.map.map[self.__path_of_animal[1]] = creature.name
+            creature.x, creature.y = self.__path_of_animal[1]
+            print(creature)
 
 
     def moves(self):
@@ -24,7 +30,8 @@ class CreatureMove:
             if not self.__path_of_animal:
                 print('Существу больше некуда идти')
             else:
-                self.update_map(creature.name)
+
+                self.update_map(creature)
                 print()
                 Render(self.map).display(self.map.map)
 

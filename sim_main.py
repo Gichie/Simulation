@@ -18,6 +18,7 @@ class Simulation:
         print(CreatingObjects.moving_creatures)
         CreatureMove(sim.map).moves()
         print()
+        print(CreatingObjects.moving_creatures)
 
 
 if __name__ == '__main__':
