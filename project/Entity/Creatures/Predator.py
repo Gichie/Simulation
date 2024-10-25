@@ -16,9 +16,12 @@ class Predator(Creature):
             map[path_of_animal[1]] = '(..)'
             print(f'{self} съел Herb')
             x, y = path_of_animal[1]
-            CreatingObjects.remove_creature(x, y)
+            CreatingObjects.remove_creature(x, y, self.name)
         else:
             map[path_of_animal[0]] = '(..)'
             map[path_of_animal[1]] = self.name
             print(f'{self} походил -> {path_of_animal[1]}')
             self.x, self.y = path_of_animal[1]
+
+    def __str__(self):
+        return self.name

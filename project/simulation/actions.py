@@ -33,6 +33,7 @@ class Actions:
             # Создание объекта в зависимости от переданного типа
             if object_type == 'Grss':
                 obj = Grass(x, y)
+                CreatingObjects.grasses.append(obj)
             elif object_type == 'Rock':
                 obj = Rock(x, y)
             elif object_type == 'Tree':

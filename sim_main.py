@@ -15,16 +15,12 @@ class Simulation:
 
 
     def next_step(self):
-        print(CreatingObjects.creating_objects)
-        print(CreatingObjects.moving_creatures)
         print(CreatingObjects.grasses)
         '''Метод для симуляции и рендеринга одного хода для всех существ'''
         for i in range(2):
             CreatureMove(sim.map).moves()
             print(MoveCounter.move_counter())
-
-
-
+        print(CreatingObjects.grasses)
 
 
 if __name__ == '__main__':

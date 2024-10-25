@@ -1,11 +1,13 @@
 class CreatingObjects:
     creating_objects = []
-    moving_creatures = [creature for creature in creating_objects if creature.name in ('Pred', 'Herb')]
-    grasses = [creature for creature in creating_objects if creature.name == 'Grss']
+    moving_creatures = []
+    grasses = []
+    dct = {'Pred': moving_creatures, 'Herb': grasses}
 
     @staticmethod
-    def remove_creature(x,y):
-        for creature in CreatingObjects.moving_creatures:
+    def remove_creature(x,y, name):
+        for creature in CreatingObjects.dct[name]:
             if creature.x == x and creature.y == y:
-                CreatingObjects.moving_creatures.remove(creature)
+                CreatingObjects.dct[name].remove(creature)
                 break
+
