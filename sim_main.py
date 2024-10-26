@@ -8,10 +8,9 @@ from project.simulation.move_counter import MoveCounter
 
 class Simulation:
     def __init__(self):
-        actions = Actions()
-        creating_objects = actions.creature()
+        Actions().creature()
         self.map = Map(Setting.width, Setting.height)
-        Render.display(self.map, self.map.create_map(creating_objects))
+        Render.display(self.map)
 
 
     def next_step(self):

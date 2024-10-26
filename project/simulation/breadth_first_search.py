@@ -10,14 +10,13 @@ class Bfs:
         self.map = map
 
     def bfs(self, goal):
-
         while self.queue:
             current = self.queue.popleft()
             if current in self.visited:
                 continue
             self.visited.add(current)
 
-            if self.map.map.get(current) == goal:                               # Проверка на достижение цели
+            if self.map.map[current].name == goal:                               # Проверка на достижение цели
                 return self.construct_path(self.start, current)                    # Построение пути
 
             for x,y in [(0, 1), (0, -1), (1, 0), (-1, 0)]:

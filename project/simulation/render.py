@@ -2,19 +2,20 @@ from project.setting import Setting
 
 
 class Render:
-    def __init__(self, map):
-        self.map = map
+    '''def __init__(self, map):
+        self.map = map'''
 
-    def display(self, map: dict):
+    def display(self):
         # Создаем пустую матрицу с нужным количеством строк и столбцов
         grid = []
-        cell_width = 4  # Ширина ячейки с отступами
+        cell_width = 6  # Ширина ячейки с отступами
 
         for y in range(Setting.height):
             row = []
             for x in range(Setting.width):
-                # Получаем элемент или '(......)', если элемента нет, и форматируем его для ширины ячейки
-                cell_content = str(map.get((x, y), '(......)')).center(cell_width)
+                # Получаем элемент или '    ', если ключа нет, и форматируем его для ширины ячейки
+                #cell_content = str(self.map[x,y]).center(cell_width)              для релиза, нужно поменять cell_width = 4
+                cell_content = str(self.map.get((x,y), (x,y))).center(cell_width)  #для себя с отображением координат ка нарте
                 row.append(cell_content)
             grid.append(" | ".join(row))  # Объединяем строку через '|'
 
