@@ -23,7 +23,7 @@ class Bfs:
 
             for x,y in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
                 neighbor = (current[0] + x, current[1] + y)
-                if neighbor in self.map.map and neighbor not in self.visited and self.map.map[neighbor].name in ('emptyy', goal):
+                if neighbor in self.map.map and neighbor not in self.visited and self.map.map[neighbor].name in (' ', goal):
                     self.queue.append(neighbor)
                     self.parent[neighbor] = current
 

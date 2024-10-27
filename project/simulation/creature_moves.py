@@ -9,19 +9,16 @@ class CreatureMove:
     def __init__(self, map):
         self.map = map
 
-    def update_map(self, creature):
-        print(self.__path_of_animal)
-        creature.make_move(creature, self.__path_of_animal, self.map.map)
-
     def moves(self):
         goals = {'Herb': 'Grss', 'Pred': 'Herb'}
         for creature in CreatingObjects.moving_creatures:
+            print(f'Ходит {creature}')
             animal = Bfs((creature.x, creature.y), self.map)
             self.__path_of_animal = animal.bfs(goals[creature.name])
             if not self.__path_of_animal:
-                print(f'{creature} больше некуда идти')
+                print(f'{creature}{creature.x, creature.y} больше некуда идти :(')
             else:
-                self.update_map(creature)
+                print(f'Его путь: {self.__path_of_animal}')
+                creature.make_move(self.__path_of_animal, self.map.map)
                 print()
                 Render.display(self.map)
-                #Render(self.map).display(self.map.map)

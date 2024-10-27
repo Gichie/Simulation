@@ -8,18 +8,24 @@ class Herbivore(Creature):
         super().__init__(x,y, speed, hp)
         self.name = 'Herb'
 
-    def make_move(self, creature, path_of_animal: list, map: dict):
+    def make_move(self, path_of_animal: list, map: dict):
         if len(path_of_animal) == 2:
-            x, y = path_of_animal[1]
-            map[(x,y)] = Empty(x,y)
-            print(f'{self.name} съел Grss {self.x, self.y} -> {x, y}')
-            CreatingObjects.remove_creature(x, y, self.name)
+            self.eat_grass(path_of_animal[1], map)
         else:
-            x,y = path_of_animal[0]
-            map[(x,y)] = Empty(x,y)
-            creature.x, creature.y = path_of_animal[1]
-            map[path_of_animal[1]] = creature
-            print(f'{self.name} походил {path_of_animal[0]} -> {creature.x, creature.y}')
+            self.move(path_of_animal, map)
 
+    def eat_grass(self, position: tuple, map: dict):
+        x, y = position
+        print(f'{self} съел Grass {self.x, self.y} -> {x, y}')
+        CreatingObjects.remove_creature(x, y, self.name)
+        map[(x, y)] = Empty(x, y)
+
+    def move(self, path_of_animal: list, map: dict):
+        x,y = path_of_animal[0]
+        self.x, self.y = path_of_animal[1]
+        map[path_of_animal[1]] = self
+        print(f'{self.name} походил {x, y} -> {self.x, self.y}')
+        # Удаление старого положения, если оно не пустое
+        map[(x, y)] = Empty(x, y)
     def __str__(self):
         return self.name
