@@ -1,4 +1,4 @@
-from project.Entity.Entity import Entity
+from project.entity.Entity import Entity
 from abc import abstractmethod
 
 class Creature(Entity):

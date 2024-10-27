@@ -1,4 +1,4 @@
-from project.Entity.Entity import Entity
+from project.entity.Entity import Entity
 
 class Rock(Entity):
     '''Статичный объект, занимающий клетку'''

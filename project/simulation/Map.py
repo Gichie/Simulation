@@ -1,16 +1,16 @@
 from project.simulation.creatingObjects import CreatingObjects
-from collections import defaultdict
-
+from project.entity.Static_objects.empty import Empty
 
 class Map:
     '''Карта, содержит в себе коллекцию в виде хеш-таблицы(словаря) для хранения существ(значение) и их расположения(ключ).'''
     def __init__(self, width, height):
-        self.map = defaultdict(lambda: ' ')
         self.width = width
         self.height = height
-        self.create_map()
+        self.map = self.create_map()
 
     def create_map(self):
+        game_map = {(i, j): Empty(i,j) for i in range(self.width) for j in range(self.height)}
         for el in CreatingObjects.creating_objects:
-            self.map[(el.x, el.y)] = el
-        return None
+            game_map[(el.x, el.y)] = el
+        return game_map
+

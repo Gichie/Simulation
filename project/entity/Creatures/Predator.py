@@ -1,4 +1,4 @@
-from project.Entity.Creatures.Creature import Creature
+from project.entity.Creatures.Creature import Creature
 from project.simulation.creatingObjects import CreatingObjects
 
 class Predator(Creature):

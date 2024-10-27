@@ -13,9 +13,9 @@ class Render:
         for y in range(Setting.height):
             row = []
             for x in range(Setting.width):
-                # Получаем элемент или '    ', если ключа нет, и форматируем его для ширины ячейки
-                #cell_content = str(self.map[x,y]).center(cell_width)              для релиза, нужно поменять cell_width = 4
-                cell_content = str(self.map.get((x,y), (x,y))).center(cell_width)  #для себя с отображением координат ка нарте
+                # Получаем элемент или '   ', если ключа нет, и форматируем его для ширины ячейки
+
+                cell_content = self.map[(x,y)].name.center(cell_width)  #для себя с отображением координат ка нарте
                 row.append(cell_content)
             grid.append(" | ".join(row))  # Объединяем строку через '|'
 

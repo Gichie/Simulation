@@ -1,6 +1,9 @@
 from project.simulation.creatingObjects import CreatingObjects
 from project.simulation.breadth_first_search import Bfs
 from project.simulation.render import Render
+from project.entity.Static_objects.Grass import Grass
+from project.entity.Creatures.herbivore import Herbivore
+
 
 class CreatureMove:
     def __init__(self, map):
@@ -8,7 +11,7 @@ class CreatureMove:
 
     def update_map(self, creature):
         print(self.__path_of_animal)
-        creature.make_move(self.__path_of_animal, self.map.map)
+        creature.make_move(creature, self.__path_of_animal, self.map.map)
 
     def moves(self):
         goals = {'Herb': 'Grss', 'Pred': 'Herb'}
@@ -20,4 +23,5 @@ class CreatureMove:
             else:
                 self.update_map(creature)
                 print()
-                Render(self.map).display(self.map.map)
+                Render.display(self.map)
+                #Render(self.map).display(self.map.map)

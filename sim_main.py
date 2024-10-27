@@ -12,14 +12,11 @@ class Simulation:
         self.map = Map(Setting.width, Setting.height)
         Render.display(self.map)
 
-
     def next_step(self):
-        print(CreatingObjects.grasses)
         '''Метод для симуляции и рендеринга одного хода для всех существ'''
-        for i in range(2):
+        for i in range(1):
             CreatureMove(sim.map).moves()
             print(MoveCounter.move_counter())
-        print(CreatingObjects.grasses)
 
 
 if __name__ == '__main__':
