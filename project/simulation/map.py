@@ -1,5 +1,5 @@
-from project.simulation.creatingObjects import CreatingObjects
-from project.entity.Static_objects.empty import Empty
+from project.simulation.creating_objects import CreatingObjects
+from project.entity.static_objects.empty import Empty
 
 class Map:
     '''Карта, содержит в себе коллекцию в виде хеш-таблицы(словаря) для хранения существ(значение) и их расположения(ключ).'''

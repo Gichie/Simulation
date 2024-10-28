@@ -1,8 +1,6 @@
-from project.simulation.creatingObjects import CreatingObjects
+from project.simulation.creating_objects import CreatingObjects
 from project.simulation.breadth_first_search import Bfs
 from project.simulation.render import Render
-from project.entity.Static_objects.Grass import Grass
-from project.entity.Creatures.herbivore import Herbivore
 
 
 class CreatureMove:
@@ -12,7 +10,7 @@ class CreatureMove:
     def moves(self):
         goals = {'Herb': 'Grss', 'Pred': 'Herb'}
         for creature in CreatingObjects.moving_creatures:
-            print(f'Ходит {creature}')
+            print(f'Ходит {creature} со скоростью {creature.speed}')
             animal = Bfs((creature.x, creature.y), self.map)
             self.__path_of_animal = animal.bfs(goals[creature.name])
             if not self.__path_of_animal:

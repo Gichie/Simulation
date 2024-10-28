@@ -1,4 +1,4 @@
-from project.entity.Entity import Entity
+from project.entity.entity import Entity
 
 class Empty(Entity):
     '''Пустое место на карте, куда может походить существо'''
