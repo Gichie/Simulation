@@ -24,8 +24,8 @@ class Actions:
         self.create_object('Grss', self.setting.count_grass)
         self.create_object('Rock', self.setting.count_rock)
         self.create_object('Tree', self.setting.count_tree)
-        self.create_object('Herb', self.setting.count_herbivore, self.setting.hp)
-        self.create_object('Pred', self.setting.count_predator, self.setting.hp, self.setting.pred_strength)
+        self.create_object('Herb', self.setting.count_herbivore)
+        self.create_object('Pred', self.setting.count_predator, self.setting.pred_strength)
 
     def create_object(self, object_type, count, *args):
         for i in range(count):
@@ -40,10 +40,12 @@ class Actions:
                 obj = Tree(x, y)
             elif object_type == 'Herb':
                 speed = self.setting.determines_speed()
-                obj = Herbivore(x, y, speed, *args)
+                hp = self.setting.determines_herb_health()
+                obj = Herbivore(x, y, speed, hp)
             elif object_type == 'Pred':
                 speed = self.setting.determines_speed()
-                obj = Predator(x, y, speed, *args)
+                hp = self.setting.determines_pred_health()
+                obj = Predator(x, y, speed, hp, *args)
             else:
                 raise ValueError(f"Unknown object type: {object_type}")
 

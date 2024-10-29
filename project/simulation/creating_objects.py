@@ -5,7 +5,7 @@ class CreatingObjects:
     dct = {'Pred': moving_creatures, 'Herb': grasses}
 
     @staticmethod
-    def remove_creature(x,y, name):
+    def remove_creature(x,y, name='Pred'):
         for creature in CreatingObjects.dct[name]:
             if creature.x == x and creature.y == y:
                 CreatingObjects.dct[name].remove(creature)
