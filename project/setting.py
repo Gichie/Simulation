@@ -3,12 +3,12 @@ from random import randint
 class Setting:
     '''Настройка симуляции'''
     def __init__(self):
-        self.width = 10
+        self.width = 11
         self.height = 5
-        self.count_grass = 4
+        self.count_grass = 3
         self.count_rock = 4
         self.count_tree = 4
-        self.count_herbivore = 4
+        self.count_herbivore = 10
         self.count_predator = 4
         self.speed_range = (1, 3)
         self.herb_health = (1, 70)

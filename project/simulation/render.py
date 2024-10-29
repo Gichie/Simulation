@@ -1,8 +1,8 @@
 class Render:
-    def __init__(self, width, height, map: 'Map'):
+    def __init__(self, width, height, map):
         self.width = width
         self.height = height
-        self.map = map.map
+        self.map = map
 
     def display(self):
         # Создаем пустую матрицу с нужным количеством строк и столбцов

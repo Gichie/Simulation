@@ -1,6 +1,8 @@
 from project.entity.creatures.creature import Creature
 from project.simulation.creating_objects import CreatingObjects
 from project.entity.static_objects.empty import Empty
+from project.simulation.breadth_first_search import Bfs
+from project.setting import Setting
 
 class Predator(Creature):
     '''Хищник. На что может потратить ход хищник:
@@ -11,6 +13,8 @@ class Predator(Creature):
         super().__init__(x,y, speed, hp, engry)
         self.strengh = strengh
         self.name = "Pred"
+        self.amount_eaten = 0
+
 
     def make_move(self, path_of_animal: list[tuple[int, int]], map: dict[tuple[int,  int], Creature]) -> None:
         # Определяем, действие: ест травоядного или движется
@@ -22,7 +26,7 @@ class Predator(Creature):
             print(f'{self}{self.x, self.y} is dead от голода и холода и старости')
             return None
         else:
-            print(f'Ходит {self} со скоростью {self.speed}, здоровьем {self.hp}/{self.full_hp} и силой {self.strengh}')
+            print(f'Ходит {self}, Скорость: {self.speed}, Здоровье: {self.hp}/{self.full_hp}, Сила: {self.strengh}, Кол-во съеденных: {self.amount_eaten}')
             self.hp -= self.engry
 
         if path_of_animal:
@@ -36,17 +40,30 @@ class Predator(Creature):
 
     def eat_herb(self, position: tuple[int, int], map: dict[tuple[int, int], Creature]) -> None:
         # Хищник ест травоядное, восполняет здоровье до полного и травоядное удаляется с карты и из списка moving_creatures
+
         # Позиция цели(травоядного)
         x, y = position
 
         target = map[(x,y)]
+        # Проверка, убьет хищник цель или ранит
         if self.attacks_target(target):
-            print(f'{self} съел Herb {self.x, self.y} -> {x, y} и восполнил здоровье')
+            self.amount_eaten += 1
+            print(f'{self} съел Herb {self.x, self.y} -> {x, y}, набрался здоровья и размножился')
             CreatingObjects.remove_creature(x, y, self.name)
             map[(x, y)] = Empty(x, y)
             self.hp = self.full_hp
+
+            # Создание нового хищника(размножение)
+            self.create_predator(map)
         else:
-            print(f'{self} атакует Herb {self.x, self.y} -> {x, y}, у Herb осталось{target.hp} здоровья')
+            print(f'{self} атакует Herb {self.x, self.y} -> {x, y}, у Herb осталось {target.hp} здоровья')
+
+    def create_predator(self, map: dict[tuple[int, int], Creature]) -> None:
+        '''Создание нового хищника(механика размножения) после того, как он съел травоядное'''
+        coordinates_for_spawn: tuple[int, int] = Bfs((self.x, self.y), map).bfs(' ')[-1]
+        new_predator = Predator(*coordinates_for_spawn, self.setting.determines_speed(), self.setting.determines_pred_health(), self.setting.determines_strength())
+        map[(coordinates_for_spawn)] = new_predator
+        CreatingObjects.moving_creatures.append(new_predator)
 
     def attacks_target(self, target):
         if self.strengh >= target.hp:

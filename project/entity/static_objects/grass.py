@@ -1,5 +1,6 @@
 from project.entity.entity import Entity
 from project.entity.static_objects.empty import Empty
+from random import shuffle
 
 
 class Grass (Entity):
@@ -12,12 +13,12 @@ class Grass (Entity):
 
     @classmethod
     def create_grass(cls, map):
+        '''Собирает все пустые координаты и в случайном месте создает траву'''
         empty_coords = []
         for k, v in map.items():
             if isinstance(v, Empty):
                 empty_coords.append(k)
-
-        #map[(x,y)] = Grass(x, y)
-
-
-
+        shuffle(empty_coords)
+        # Проверка на пустые координаты
+        if empty_coords:
+            map[(empty_coords[0])] = Grass(*empty_coords[0])

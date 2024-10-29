@@ -2,6 +2,8 @@ from project.entity.creatures.creature import Creature
 from project.simulation.creating_objects import CreatingObjects
 from project.entity.static_objects.empty import Empty
 from project.entity.static_objects.grass import Grass
+from project.simulation.breadth_first_search import Bfs
+
 
 class Herbivore(Creature):
     '''Травоядное. Стремится найти ресурс (траву), может потратить свой ход на движение в сторону травы, либо на её поглощение.'''
@@ -9,9 +11,9 @@ class Herbivore(Creature):
         super().__init__(x, y, speed, hp, engry)
         self.name = 'Herb'
 
+
     def make_move(self, path_of_animal: list[tuple[int, int]], map: dict[tuple[int,  int], Creature]) -> None:
         # Определяем, действие: ест траву или движется
-        print(f'Ходит {self} со скоростью {self.speed} и здоровьем {self.hp}/{self.full_hp}')
 
         # Голодание
         if self.hp <= 0:
@@ -20,6 +22,7 @@ class Herbivore(Creature):
             print(f'{self}{self.x, self.y} is dead')
             return None
         else:
+            print(f'Ходит {self} со скоростью {self.speed} и здоровьем {self.hp}/{self.full_hp}')
             self.hp -= self.engry
 
         if path_of_animal:
@@ -34,12 +37,21 @@ class Herbivore(Creature):
     def eat_grass(self, position: tuple[int, int], map: dict[tuple[int, int], Creature]) -> None:
         # Травяожное ест траву, восполняет здоровье до полного и трава удаляется с карты и из списка grasses
         x, y = position
-        print(f'{self} съел Grass {self.x, self.y} -> {x, y} и восполнил здоровье')
+        print(f'{self} съел Grass {self.x, self.y} -> {x, y}, восполнил здоровье и размножился')
         CreatingObjects.remove_creature(x, y, self.name)
         map[(x, y)] = Empty(x, y)
-        # метод, генерирующий 1 траву в случайном свободном месте
         Grass.create_grass(map)
         self.hp = self.full_hp
+
+        # Создание нового травоядного (размножение)
+        self.create_herbivore(map)
+
+    def create_herbivore(self, map: dict[tuple[int, int], Creature]) -> None:
+        '''Создание нового травоядного(механика размножения) после того, как оно съело траву'''
+        coordinates_for_spawn: tuple[int, int] = Bfs((self.x, self.y), map).bfs(' ')[-1]
+        new_herbivore = Herbivore(*coordinates_for_spawn, self.setting.determines_speed(), self.setting.determines_herb_health())
+        map[(coordinates_for_spawn)] = new_herbivore
+        CreatingObjects.moving_creatures.append(new_herbivore)
 
     def move(self, path_of_animal: list[tuple[int, int]], map: dict[tuple[int, int], Creature]) -> None:
         # Травяодное движется к ближайшей траве(по поиску в ширину) со своей скоростью

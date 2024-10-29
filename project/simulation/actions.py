@@ -5,7 +5,7 @@ from project.entity.static_objects.rock import Rock
 from project.entity.static_objects.tree import Tree
 from project.simulation.creating_objects import CreatingObjects
 from project.setting import Setting
-from random import shuffle, randint
+from random import shuffle
 
 
 class Actions:
