@@ -25,9 +25,9 @@ class Actions:
         self.create_object('Rock', self.setting.count_rock)
         self.create_object('Tree', self.setting.count_tree)
         self.create_object('Herb', self.setting.count_herbivore)
-        self.create_object('Pred', self.setting.count_predator, self.setting.pred_strength)
+        self.create_object('Pred', self.setting.count_predator)
 
-    def create_object(self, object_type, count, *args):
+    def create_object(self, object_type, count):
         for i in range(count):
             x, y = self.coords.pop()
             # Создание объекта в зависимости от переданного типа
@@ -45,7 +45,8 @@ class Actions:
             elif object_type == 'Pred':
                 speed = self.setting.determines_speed()
                 hp = self.setting.determines_pred_health()
-                obj = Predator(x, y, speed, hp, *args)
+                strengh = self.setting.determines_strength()
+                obj = Predator(x, y, speed, hp, strengh)
             else:
                 raise ValueError(f"Unknown object type: {object_type}")
 

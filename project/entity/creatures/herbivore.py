@@ -1,6 +1,7 @@
 from project.entity.creatures.creature import Creature
 from project.simulation.creating_objects import CreatingObjects
 from project.entity.static_objects.empty import Empty
+from project.entity.static_objects.grass import Grass
 
 class Herbivore(Creature):
     '''Травоядное. Стремится найти ресурс (траву), может потратить свой ход на движение в сторону травы, либо на её поглощение.'''
@@ -36,6 +37,8 @@ class Herbivore(Creature):
         print(f'{self} съел Grass {self.x, self.y} -> {x, y} и восполнил здоровье')
         CreatingObjects.remove_creature(x, y, self.name)
         map[(x, y)] = Empty(x, y)
+        # метод, генерирующий 1 траву в случайном свободном месте
+        Grass.create_grass(map)
         self.hp = self.full_hp
 
     def move(self, path_of_animal: list[tuple[int, int]], map: dict[tuple[int, int], Creature]) -> None:

@@ -22,7 +22,7 @@ class Predator(Creature):
             print(f'{self}{self.x, self.y} is dead от голода и холода и старости')
             return None
         else:
-            print(f'Ходит {self} со скоростью {self.speed} и здоровьем {self.hp}/{self.full_hp}')
+            print(f'Ходит {self} со скоростью {self.speed}, здоровьем {self.hp}/{self.full_hp} и силой {self.strengh}')
             self.hp -= self.engry
 
         if path_of_animal:
@@ -36,11 +36,24 @@ class Predator(Creature):
 
     def eat_herb(self, position: tuple[int, int], map: dict[tuple[int, int], Creature]) -> None:
         # Хищник ест травоядное, восполняет здоровье до полного и травоядное удаляется с карты и из списка moving_creatures
+        # Позиция цели(травоядного)
         x, y = position
-        print(f'{self} съел Herb {self.x, self.y} -> {x, y} и восполнил здоровье')
-        CreatingObjects.remove_creature(x, y, self.name)
-        map[(x, y)] = Empty(x, y)
-        self.hp = self.full_hp
+
+        target = map[(x,y)]
+        if self.attacks_target(target):
+            print(f'{self} съел Herb {self.x, self.y} -> {x, y} и восполнил здоровье')
+            CreatingObjects.remove_creature(x, y, self.name)
+            map[(x, y)] = Empty(x, y)
+            self.hp = self.full_hp
+        else:
+            print(f'{self} атакует Herb {self.x, self.y} -> {x, y}, у Herb осталось{target.hp} здоровья')
+
+    def attacks_target(self, target):
+        if self.strengh >= target.hp:
+            return True
+        else:
+            target.hp -= self.strengh
+            return False
 
     def move(self, path_of_animal: list[tuple[int, int]], map: dict[tuple[int, int], Creature]) -> None:
         # Хищник движется к ближайшему травоядному(по поиску в ширину) со своей скоростью
