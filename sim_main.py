@@ -4,9 +4,7 @@ from project.setting import Setting
 from project.simulation.render import Render
 from project.simulation.creature_moves import CreatureMove
 from project.simulation.creating_objects import CreatingObjects
-from project.simulation.move_counter import MoveCounter
-import time
-from project.entity.creatures.predator import Predator
+
 
 class Simulation:
     def __init__(self):
@@ -15,20 +13,20 @@ class Simulation:
         self.map = Map(setting.width, setting.height).map
         print(CreatingObjects.moving_creatures)
         self.render = Render(setting.width, setting.height, self.map)
+        self.creature_move = CreatureMove(self.map, self.render)
         self.render.display()
+
+    def start_simulation(self):
+        '''Метод, запускающий бесконечный цикл симуляции и рендеринга'''
+        while CreatingObjects.moving_creatures:
+            self.next_step()
 
     def next_step(self):
         '''Метод для симуляции и рендеринга одного хода для всех существ'''
-
-        while CreatingObjects.moving_creatures:
-            if Predator in map(type, CreatingObjects.moving_creatures):
-                CreatureMove(sim.map, self.render).moves()
-                print(CreatingObjects.moving_creatures)
-                print(MoveCounter.move_counter())
-                print()
-                time.sleep(0.001)
+        self.creature_move.moves()
 
 
 if __name__ == '__main__':
     sim = Simulation()
     sim.next_step()
+    sim.start_simulation()

@@ -2,19 +2,18 @@ from project.entity.creatures.creature import Creature
 from project.simulation.creating_objects import CreatingObjects
 from project.entity.static_objects.empty import Empty
 from project.simulation.breadth_first_search import Bfs
-from project.setting import Setting
+
 
 class Predator(Creature):
     '''Хищник. На что может потратить ход хищник:
-
     Переместиться (чтобы приблизиться к жертве - травоядному)
     Атаковать травоядное. При этом количество HP травоядного уменьшается на силу атаки хищника. Если значение HP жертвы опускается до 0, травоядное исчезает'''
-    def __init__(self, x, y, speed: int, hp: int, strengh: int, engry: int = 2):
+
+    def __init__(self, x, y, speed: int, hp: int, strengh: int, engry: int = 1):
         super().__init__(x,y, speed, hp, engry)
         self.strengh = strengh
         self.name = "Pred"
         self.amount_eaten = 0
-
 
     def make_move(self, path_of_animal: list[tuple[int, int]], map: dict[tuple[int,  int], Creature]) -> None:
         # Определяем, действие: ест травоядного или движется
@@ -23,6 +22,7 @@ class Predator(Creature):
         if self.hp <= 0:
             self.remove_pred(map)
             CreatingObjects.remove_creature(self.x, self.y)
+            print(f'Ходит {self}')
             print(f'{self}{self.x, self.y} is dead от голода и холода и старости')
             return None
         else:
@@ -43,8 +43,8 @@ class Predator(Creature):
 
         # Позиция цели(травоядного)
         x, y = position
-
         target = map[(x,y)]
+
         # Проверка, убьет хищник цель или ранит
         if self.attacks_target(target):
             self.amount_eaten += 1
