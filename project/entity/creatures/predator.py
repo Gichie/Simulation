@@ -1,7 +1,9 @@
 from project.entity.creatures.creature import Creature
+from project.setting import Setting
 from project.simulation.creating_objects import CreatingObjects
 from project.entity.static_objects.empty import Empty
 from project.simulation.breadth_first_search import Bfs
+from project.simulation.map import Map
 
 
 class Predator(Creature):
@@ -14,16 +16,15 @@ class Predator(Creature):
         self.strengh = strengh
         self.name = "Pred"
         self.amount_eaten = 0
+        self.setting: Setting
 
     def make_move(self, path_of_animal: list[tuple[int, int]], map: dict[tuple[int,  int], Creature]) -> None:
         # Определяем, действие: ест травоядного или движется
 
         # Голодание
         if self.hp <= 0:
-            self.remove_pred(map)
-            CreatingObjects.remove_creature(self.x, self.y)
             print(f'Ходит {self}')
-            print(f'{self}{self.x, self.y} is dead от голода и холода и старости')
+            self.remove_pred(map)
             return None
         else:
             print(f'Ходит {self}, Скорость: {self.speed}, Здоровье: {self.hp}/{self.full_hp}, Сила: {self.strengh}, Кол-во съеденных: {self.amount_eaten}')
@@ -48,9 +49,9 @@ class Predator(Creature):
         # Проверка, убьет хищник цель или ранит
         if self.attacks_target(target):
             self.amount_eaten += 1
-            print(f'{self} съел Herb {self.x, self.y} -> {x, y}, набрался здоровья и размножился')
-            CreatingObjects.remove_creature(x, y, self.name)
-            map[(x, y)] = Empty(x, y)
+            print(f'{self} съел Herb {self.x, self.y} -> {x, y} и набрался здоровья')
+            # Удаление Травоядного
+            target.remove_herb(map)
             self.hp = self.full_hp
 
             # Создание нового хищника(размножение)
@@ -60,10 +61,17 @@ class Predator(Creature):
 
     def create_predator(self, map: dict[tuple[int, int], Creature]) -> None:
         '''Создание нового хищника(механика размножения) после того, как он съел травоядное'''
-        coordinates_for_spawn: tuple[int, int] = Bfs((self.x, self.y), map).bfs(' ')[-1]
-        new_predator = Predator(*coordinates_for_spawn, self.setting.determines_speed(), self.setting.determines_pred_health(), self.setting.determines_strength())
-        map[(coordinates_for_spawn)] = new_predator
-        CreatingObjects.moving_creatures.append(new_predator)
+        if self.amount_eaten > 1:
+            coordinates_for_spawn: tuple[int, int] = Bfs((self.x, self.y), map).bfs(' ')
+            if coordinates_for_spawn:
+                coordinates_for_spawn = coordinates_for_spawn[-1]
+                new_predator = Predator(*coordinates_for_spawn, self.setting.determines_speed(), self.setting.determines_pred_health(), self.setting.determines_strength())
+                map[(coordinates_for_spawn)] = new_predator
+                CreatingObjects.moving_creatures.append(new_predator)
+                print(f'{self} Размножился')
+            else:
+                print('Размножиться Хищнику не удалось')
+
 
     def attacks_target(self, target):
         if self.strengh >= target.hp:
@@ -89,6 +97,30 @@ class Predator(Creature):
 
     def remove_pred(self, map: dict[tuple[int, int], Creature]) -> None:
         map[(self.x, self.y)] = Empty(self.x, self.y)
+        CreatingObjects.remove_creature(self.x, self.y)
+        print(f'{self}{self.x, self.y} is dead')
+
+        # Проверка, остались ли еще Хищники, если нет, создание их
+        if self.is_predator_over():
+            self.spawn_new_predators(map)
+
+    def spawn_new_predators(self, map: dict[tuple[int, int], Creature]) -> None:
+        '''Создание нового хищника, если все хищники умерли'''
+        for _ in range(self.setting.count_predator):
+            coordinates = Map.collects_free_coordinates(map)
+            if coordinates:
+                new_predator = Predator(
+                    *coordinates,
+                    self.setting.determines_speed(),
+                    self.setting.determines_pred_health(),
+                    self.setting.determines_strength()
+                )
+                map[coordinates] = new_predator
+                CreatingObjects.moving_creatures.append(new_predator)
+                print(f'Появился новый Pred в {coordinates}')
+
+    def is_predator_over(self) -> bool:
+        return not any(isinstance(creature, Predator) for creature in CreatingObjects.moving_creatures)
 
     def __str__(self):
         return self.name

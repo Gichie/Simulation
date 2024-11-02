@@ -10,8 +10,6 @@ class CreatureMove:
 
     def moves(self):
         goals = {'Herb': 'Grss', 'Pred': 'Herb'}
-        #types_of_creatures = map(type, CreatingObjects.moving_creatures)
-
         for creature in CreatingObjects.moving_creatures[:]:
             print()
             animal = Bfs((creature.x, creature.y), self.map)

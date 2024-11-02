@@ -3,6 +3,7 @@ from project.simulation.creating_objects import CreatingObjects
 from project.entity.static_objects.empty import Empty
 from project.entity.static_objects.grass import Grass
 from project.simulation.breadth_first_search import Bfs
+from project.simulation.map import Map
 
 
 class Herbivore(Creature):
@@ -13,8 +14,6 @@ class Herbivore(Creature):
 
     def make_move(self, path_of_animal: list[tuple[int, int]], map: dict[tuple[int,  int], Creature]) -> None:
         # Определяем, действие: ест траву или движется
-
-        # Голодание
         if self.hp <= 0:
             self.remove_herb(map)
             return None
@@ -44,14 +43,14 @@ class Herbivore(Creature):
 
     def create_herbivore(self, map: dict[tuple[int, int], Creature]) -> None:
         '''Создание нового травоядного(механика размножения) после того, как оно съело траву'''
-        coordinates_for_spawn: tuple[int, int] = Bfs((self.x, self.y), map).bfs(' ')
+        coordinates_for_spawn = Bfs((self.x, self.y), map).bfs(' ')
         if coordinates_for_spawn:
             coordinates_for_spawn = coordinates_for_spawn[-1]
             new_herbivore = Herbivore(*coordinates_for_spawn, self.setting.determines_speed(), self.setting.determines_herb_health())
             map[(coordinates_for_spawn)] = new_herbivore
             CreatingObjects.moving_creatures.append(new_herbivore)
         else:
-            print('Родить травоядное не удалось')
+            print('Размножиться травоядному не удалось')
 
     def move(self, path_of_animal: list[tuple[int, int]], map: dict[tuple[int, int], Creature]) -> None:
         # Травяодное движется к ближайшей траве(по поиску в ширину) со своей скоростью
@@ -72,6 +71,28 @@ class Herbivore(Creature):
         map[(self.x, self.y)] = Empty(self.x, self.y)
         CreatingObjects.remove_creature(self.x, self.y)
         print(f'{self}{self.x, self.y} is dead')
+
+        # Проверка, остались ли еще Травоядные
+        if self.is_herbivore_over():
+            self.spawn_new_herbivores(map)
+
+    def spawn_new_herbivores(self, map: dict[tuple[int, int], Creature]) -> None:
+        '''Создание нового травяодного, если все травяодные умерли'''
+        for _ in range(self.setting.count_herbivore):
+            coordinates = Map.collects_free_coordinates(map)
+            if coordinates:
+                new_herbivore = Herbivore(
+                    *coordinates,
+                    self.setting.determines_speed(),
+                    self.setting.determines_herb_health(),
+                )
+                map[coordinates] = new_herbivore
+                CreatingObjects.moving_creatures.append(new_herbivore)
+                print(f'Появился новый Herb в {coordinates}')
+
+    def is_herbivore_over(self) -> bool:
+        '''Проверка на наличие травоядных'''
+        return not any(isinstance(creature, Herbivore) for creature in CreatingObjects.moving_creatures)
 
     def __str__(self):
         return self.name
