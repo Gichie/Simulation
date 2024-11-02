@@ -58,7 +58,7 @@ class Herbivore(Creature):
         print(f'{self}{self.x, self.y} is dead')
 
         # Проверка, остались ли еще Травоядные
-        if self.is_herbivore_over():
+        if self.is_creature_over():
             self.spawn_new_herbivores(map)
 
     def spawn_new_herbivores(self, map: dict[tuple[int, int], Creature]) -> None:
@@ -74,7 +74,3 @@ class Herbivore(Creature):
                 map[coordinates] = new_herbivore
                 CreatingObjects.moving_creatures.append(new_herbivore)
                 print(f'Появился новый Herb в {coordinates}')
-
-    def is_herbivore_over(self) -> bool:
-        '''Проверка на наличие травоядных'''
-        return not any(isinstance(creature, Herbivore) for creature in CreatingObjects.moving_creatures)

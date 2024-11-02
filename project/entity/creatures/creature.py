@@ -2,6 +2,7 @@ from project.entity.entity import Entity
 from abc import abstractmethod
 from project.entity.static_objects.empty import Empty
 from project.setting import Setting
+from project.simulation.creating_objects import CreatingObjects
 
 
 class Creature(Entity):
@@ -31,6 +32,9 @@ class Creature(Entity):
 
         # Обновление старого положения, если оно не пустое
         map[old_position] = Empty(*old_position)
+
+    def is_creature_over(self) -> bool:
+        return not any(isinstance(creature, type(self)) for creature in CreatingObjects.moving_creatures)
 
     def __str__(self) -> str:
         return self.name

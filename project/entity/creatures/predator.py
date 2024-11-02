@@ -20,15 +20,13 @@ class Predator(Creature):
 
     def make_move(self, path_of_animal: list[tuple[int, int]], map: dict[tuple[int, int], Creature]) -> None:
         # Определяем, действие: ест травоядного или движется
-
+        print(
+            f'Ходит {self}, Скорость: {self.speed}, Здоровье: {self.hp}/{self.full_hp}, Сила: {self.strengh}, Кол-во съеденных: {self.amount_eaten}')
         # Голодание
         if self.hp <= 0:
-            print(f'Ходит {self}')
             self.remove_pred(map)
             return None
         else:
-            print(
-                f'Ходит {self}, Скорость: {self.speed}, Здоровье: {self.hp}/{self.full_hp}, Сила: {self.strengh}, Кол-во съеденных: {self.amount_eaten}')
             self.hp -= self.engry
 
         if path_of_animal:
@@ -91,7 +89,7 @@ class Predator(Creature):
         print(f'{self}{self.x, self.y} is dead')
 
         # Проверка, остались ли еще Хищники, если нет, создание их
-        if self.is_predator_over():
+        if self.is_creature_over():
             self.spawn_new_predators(map)
 
     def spawn_new_predators(self, map: dict[tuple[int, int], Creature]) -> None:
@@ -108,6 +106,3 @@ class Predator(Creature):
                 map[coordinates] = new_predator
                 CreatingObjects.moving_creatures.append(new_predator)
                 print(f'Появился новый Pred в {coordinates}')
-
-    def is_predator_over(self) -> bool:
-        return not any(isinstance(creature, Predator) for creature in CreatingObjects.moving_creatures)
