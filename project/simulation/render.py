@@ -14,7 +14,7 @@ class Render:
             for x in range(self.width):
                 # Получаем элемент или '   ', если ключа нет, и форматируем его для ширины ячейки
 
-                cell_content = self.map[(x,y)].name.center(cell_width)  #для себя с отображением координат ка нарте
+                cell_content = self.map[(x, y)].name.center(cell_width)  # для себя с отображением координат ка нарте
                 row.append(cell_content)
             grid.append(" | ".join(row))  # Объединяем строку через '|'
 
@@ -23,4 +23,3 @@ class Render:
         for line in grid:
             print(line)
             print(separator)  # Выводим разделитель после каждой строки
-

@@ -1,8 +1,8 @@
 from project.entity.creatures.creature import Creature
-from project.setting import Setting
-from project.simulation.creating_objects import CreatingObjects
 from project.entity.static_objects.empty import Empty
+from project.setting import Setting
 from project.simulation.breadth_first_search import Bfs
+from project.simulation.creating_objects import CreatingObjects
 from project.simulation.map import Map
 
 
@@ -12,13 +12,13 @@ class Predator(Creature):
     Атаковать травоядное. При этом количество HP травоядного уменьшается на силу атаки хищника. Если значение HP жертвы опускается до 0, травоядное исчезает'''
 
     def __init__(self, x, y, speed: int, hp: int, strengh: int, engry: int = 1):
-        super().__init__(x,y, speed, hp, engry)
+        super().__init__(x, y, speed, hp, engry)
         self.strengh = strengh
         self.name = "Pred"
         self.amount_eaten = 0
         self.setting: Setting
 
-    def make_move(self, path_of_animal: list[tuple[int, int]], map: dict[tuple[int,  int], Creature]) -> None:
+    def make_move(self, path_of_animal: list[tuple[int, int]], map: dict[tuple[int, int], Creature]) -> None:
         # Определяем, действие: ест травоядного или движется
 
         # Голодание
@@ -27,7 +27,8 @@ class Predator(Creature):
             self.remove_pred(map)
             return None
         else:
-            print(f'Ходит {self}, Скорость: {self.speed}, Здоровье: {self.hp}/{self.full_hp}, Сила: {self.strengh}, Кол-во съеденных: {self.amount_eaten}')
+            print(
+                f'Ходит {self}, Скорость: {self.speed}, Здоровье: {self.hp}/{self.full_hp}, Сила: {self.strengh}, Кол-во съеденных: {self.amount_eaten}')
             self.hp -= self.engry
 
         if path_of_animal:
@@ -44,7 +45,7 @@ class Predator(Creature):
 
         # Позиция цели(травоядного)
         x, y = position
-        target = map[(x,y)]
+        target = map[(x, y)]
 
         # Проверка, убьет хищник цель или ранит
         if self.attacks_target(target):
@@ -65,13 +66,17 @@ class Predator(Creature):
             coordinates_for_spawn: tuple[int, int] = Bfs((self.x, self.y), map).bfs(' ')
             if coordinates_for_spawn:
                 coordinates_for_spawn = coordinates_for_spawn[-1]
-                new_predator = Predator(*coordinates_for_spawn, self.setting.determines_speed(), self.setting.determines_pred_health(), self.setting.determines_strength())
+                new_predator = Predator(
+                    *coordinates_for_spawn,
+                    self.setting.determines_speed(),
+                    self.setting.determines_pred_health(),
+                    self.setting.determines_strength()
+                )
                 map[(coordinates_for_spawn)] = new_predator
                 CreatingObjects.moving_creatures.append(new_predator)
                 print(f'{self} Размножился')
             else:
                 print('Размножиться Хищнику не удалось')
-
 
     def attacks_target(self, target):
         if self.strengh >= target.hp:
@@ -79,21 +84,6 @@ class Predator(Creature):
         else:
             target.hp -= self.strengh
             return False
-
-    def move(self, path_of_animal: list[tuple[int, int]], map: dict[tuple[int, int], Creature]) -> None:
-        # Хищник движется к ближайшему травоядному(по поиску в ширину) со своей скоростью
-        # Получение новой позиции на основе скорости
-        target_index = min(self.speed, len(path_of_animal) - 2)
-        target_position = path_of_animal[target_index]
-
-        # Обновление позиции и карты
-        old_position = (self.x, self.y)
-        self.x, self.y = target_position
-        map[target_position] = self
-        print(f'{self.name} походил {old_position} -> {self.x, self.y}')
-
-        # Обновление старого положения, если оно не пустое
-        map[old_position] = Empty(*old_position)
 
     def remove_pred(self, map: dict[tuple[int, int], Creature]) -> None:
         map[(self.x, self.y)] = Empty(self.x, self.y)
@@ -121,6 +111,3 @@ class Predator(Creature):
 
     def is_predator_over(self) -> bool:
         return not any(isinstance(creature, Predator) for creature in CreatingObjects.moving_creatures)
-
-    def __str__(self):
-        return self.name

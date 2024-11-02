@@ -1,38 +1,37 @@
-from project.simulation.actions import Actions
-from project.simulation.map import Map
-from project.setting import Setting
-from project.simulation.render import Render
-from project.simulation.creature_moves import CreatureMove
-from project.simulation.creating_objects import CreatingObjects
 import threading
+from project.setting import Setting
+from project.simulation.actions import Actions
+from project.simulation.creating_objects import CreatingObjects
+from project.simulation.creature_moves import CreatureMove
+from project.simulation.map import Map
+from project.simulation.render import Render
 
 
 class Simulation:
     def __init__(self):
+        """Инициализация симуляции, создание карты и объектов, установка паузы"""
         setting = Setting()
         Actions(setting).creature()
+
         self.map = Map(setting.width, setting.height).map
-        print(CreatingObjects.moving_creatures)
         self.render = Render(setting.width, setting.height, self.map)
         self.creature_move = CreatureMove(self.map, self.render)
-        self.pause_event = threading.Event()  # Флаг для паузы
+        self.pause_event = threading.Event()  # Флаг для управления паузой
         self.render.display()
 
     def start_simulation(self):
-        '''Метод, запускающий бесконечный цикл симуляции и рендеринга'''
-
-        # Устанавливаем паузу по умолчанию как "неактивную"
-        self.pause_event.set()
+        """Запуск основного цикла симуляции с контролем паузы и потоком для команд"""
+        self.pause_event.set()  # Устанавливаем событие для старта
 
         # Запускаем поток для отслеживания ввода команд
         threading.Thread(target=self.wait_for_commands, daemon=True).start()
 
         while CreatingObjects.moving_creatures:
-                self.pause_event.wait()
-                self.next_step()
+            self.pause_event.wait()  # Ожидание до установки флага
+            self.next_step()
 
     def next_step(self):
-        '''Метод для симуляции и рендеринга одного хода для всех существ'''
+        """Симуляция и рендеринг одного хода для всех существ"""
         self.creature_move.moves()
 
     def pause(self):
@@ -59,5 +58,4 @@ class Simulation:
 
 if __name__ == '__main__':
     sim = Simulation()
-    #sim.next_step()
     sim.start_simulation()

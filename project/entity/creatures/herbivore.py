@@ -52,21 +52,6 @@ class Herbivore(Creature):
         else:
             print('Размножиться травоядному не удалось')
 
-    def move(self, path_of_animal: list[tuple[int, int]], map: dict[tuple[int, int], Creature]) -> None:
-        # Травяодное движется к ближайшей траве(по поиску в ширину) со своей скоростью
-        # Получение новой позиции на основе скорости
-        target_index = min(self.speed, len(path_of_animal) - 2)
-        target_position = path_of_animal[target_index]
-
-        # Обновление позиции и карты
-        old_position = (self.x, self.y)
-        self.x, self.y = target_position
-        map[target_position] = self
-        print(f'{self.name} походил {old_position} -> {self.x, self.y}')
-
-        # Обновление старого положения, если оно не пустое
-        map[old_position] = Empty(*old_position)
-
     def remove_herb(self, map: dict[tuple[int, int], Creature]) -> None:
         map[(self.x, self.y)] = Empty(self.x, self.y)
         CreatingObjects.remove_creature(self.x, self.y)
@@ -93,6 +78,3 @@ class Herbivore(Creature):
     def is_herbivore_over(self) -> bool:
         '''Проверка на наличие травоядных'''
         return not any(isinstance(creature, Herbivore) for creature in CreatingObjects.moving_creatures)
-
-    def __str__(self):
-        return self.name
