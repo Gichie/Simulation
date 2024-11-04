@@ -20,7 +20,7 @@ class Predator(Creature):
     def make_move(self, path_of_animal: list[tuple[int, int]], map: dict[tuple[int, int], Creature]) -> None:
         # Определяем, действие: ест травоядного или движется
         print(
-            f'Ходит {self}, Скорость: {self.speed}, Здоровье: {self.hp}/{self.full_hp}, Сила: {self.strength}, Кол-во съеденных: {self.amount_eaten}')
+            f'Ходит {self}{self.x, self.y}, Скорость: {self.speed}, Здоровье: {self.hp}/{self.full_hp}, Сила: {self.strength}, Кол-во съеденных: {self.amount_eaten}')
         # Голодание
         if self.hp <= 0:
             self.remove_creature(map)
@@ -31,31 +31,11 @@ class Predator(Creature):
         if path_of_animal:
             print(f'Его путь: {path_of_animal}')
             if len(path_of_animal) == 2:
-                self.eat_herb(path_of_animal[1], map)
+                self.eat_target(map[path_of_animal[1]], map)
             else:
                 self.move(path_of_animal, map)
         else:
-            print(f'{self}{self.x, self.y} больше некуда идти :(')
-
-    def eat_herb(self, position: tuple[int, int], map: dict[tuple[int, int], Creature]) -> None:
-        # Хищник ест травоядное, восполняет здоровье до полного и травоядное удаляется с карты и из списка moving_creatures
-
-        # Позиция цели(травоядного)
-        x, y = position
-        target = map[(x, y)]
-
-        # Проверка, убьет хищник цель или ранит
-        if self.attacks_target(target):
-            self.amount_eaten += 1
-            print(f'{self} съел Herb {self.x, self.y} -> {x, y} и набрался здоровья')
-            # Удаление Травоядного
-            target.remove_creature(map)
-            self.hp = self.full_hp
-
-            # Создание нового хищника(размножение)
-            self.create_predator(map)
-        else:
-            print(f'{self} атакует Herb {self.x, self.y} -> {x, y}, у Herb осталось {target.hp} здоровья')
+            print(f"{self}{self.x, self.y} больше некуда идти :(")
 
     def create_predator(self, map: dict[tuple[int, int], Creature]) -> None:
         '''Создание нового хищника(механика размножения) после того, как он съел травоядное'''

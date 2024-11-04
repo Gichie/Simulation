@@ -22,7 +22,7 @@ class Render:
                 creature = self.map.get((x, y), None)
 
                 if isinstance(creature, Herbivore):
-                    # Если это Herbivore, добавляем зеленый цвет
+                    # Если это Herbivore, добавляем желтый цвет
                     cell_content = f"{Fore.YELLOW}{creature.name.center(cell_width)}{Style.RESET_ALL}"
                 elif isinstance(creature, Grass):
                     cell_content =f"{Fore.GREEN}{creature.name.center(cell_width)}{Style.RESET_ALL}"

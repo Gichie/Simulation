@@ -3,18 +3,18 @@ from random import randint
 class Setting:
     '''Настройка симуляции'''
     def __init__(self):
-        self.width = 11
-        self.height = 11
-        self.count_grass = 7
-        self.count_rock = 7
+        self.width = 4
+        self.height = 5
+        self.count_grass = 2
+        self.count_rock = 0
         self.count_tree = self.count_rock
         self.count_predator = 1
-        self.count_herbivore = self.count_predator * 20
+        self.count_herbivore = self.count_predator * 2
         self.speed_range = (1, 2)
-        self.herb_health = (12, 65)
-        self.pred_health = (1, 4)
+        self.herb_health = (11, 65)
+        self.pred_health = (1, 2)
         self.pred_strength = (1, 64)
-        self.amount_eaten_for_offspring = 5
+        self.amount_eaten_for_offspring = 3
 
     def determines_speed(self):
         return randint(*self.speed_range)

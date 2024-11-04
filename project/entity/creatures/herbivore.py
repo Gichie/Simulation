@@ -14,11 +14,11 @@ class Herbivore(Creature):
 
     def make_move(self, path_of_animal: list[tuple[int, int]], map: dict[tuple[int, int], Creature]) -> None:
         # Определяем, действие: ест траву или движется
+        print(f'Ходит {self}{self.x, self.y} со скоростью {self.speed} и здоровьем {self.hp}/{self.full_hp}')
         if self.hp <= 0:
             self.remove_creature(map)
             return
 
-        print(f'Ходит {self}{self.x, self.y} со скоростью {self.speed} и здоровьем {self.hp}/{self.full_hp}')
         self.hp -= self.engry
 
         if path_of_animal:
@@ -29,17 +29,6 @@ class Herbivore(Creature):
                 self.move(path_of_animal, map)
         else:
             print(f'{self}{self.x, self.y} больше некуда идти :(')
-
-    '''def eat_grass(self, position: tuple[int, int], map: dict[tuple[int, int], Creature]) -> None:
-        # Травяожное ест траву, восполняет здоровье до полного и трава удаляется с карты и из списка grasses
-        x, y = position
-        print(f'{self} съел Grass {self.x, self.y} -> {x, y}, восполнил здоровье и размножился')
-        CreatingObjects.remove_creature(x, y, self.name)
-        map[(x, y)] = Empty(x, y)
-        Grass.create_grass(map)
-        self.hp = self.full_hp
-        # Создание нового травоядного (размножение)
-        self.create_herbivore(map)'''
 
     def create_herbivore(self, map: dict[tuple[int, int], Creature]) -> None:
         '''Создание нового травоядного(механика размножения) после того, как оно съело траву'''

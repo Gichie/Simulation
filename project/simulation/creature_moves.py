@@ -10,7 +10,7 @@ class CreatureMove:
 
     def moves(self):
         goals = {'Herb': 'Grss', 'Pred': 'Herb'}
-        for creature in CreatingObjects.moving_creatures[:]:
+        for creature in CreatingObjects.moving_creatures:
             print()
             animal = Bfs((creature.x, creature.y), self.map)
             self.__path_of_animal = animal.bfs(goals[creature.name])

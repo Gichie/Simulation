@@ -1,8 +1,8 @@
 class CreatingObjects:
     creating_objects = []
     moving_creatures = []
-    grasses = []
-    dct = {'Pred': moving_creatures, 'Herb': grasses}
+
+    dct = {'Pred': moving_creatures}
 
     @staticmethod
     def remove_creature(x,y, name='Pred'):

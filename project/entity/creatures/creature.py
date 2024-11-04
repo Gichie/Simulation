@@ -1,6 +1,7 @@
 from project.entity.entity import Entity
 from abc import abstractmethod
 from project.entity.static_objects.empty import Empty
+from project.entity.static_objects.grass import Grass
 from project.setting import Setting
 from project.simulation.creating_objects import CreatingObjects
 from project.simulation.map import Map
@@ -69,8 +70,15 @@ class Creature(Entity):
             print(f'{self}{self.x, self.y} съел Grass, восполнил здоровье и размножился')
             # Создание нового травоядного (размножение)
             self.create_herbivore(map)
-
-
+        elif self.name == 'Pred':
+            if self.attacks_target(target):
+                print(f'{self}{self.x, self.y} съел {target} и набрался здоровья')
+                target.remove_creature(map)
+                self.hp = self.full_hp
+                self.amount_eaten += 1
+                self.create_predator(map)
+            else:
+                print(f'{self}{self.x, self.y} атакует {target}, осталось {target.hp} здоровья')
 
     def __str__(self) -> str:
         return self.name
