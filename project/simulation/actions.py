@@ -40,12 +40,12 @@ class Actions:
                 obj = Tree(x, y)
             elif object_type == 'Herb':
                 speed = self.setting.determines_speed()
-                hp = self.setting.determines_herb_health()
+                hp = self.setting.determines_health(object_type)
                 obj = Herbivore(x, y, speed, hp)
             elif object_type == 'Pred':
                 speed = self.setting.determines_speed()
-                hp = self.setting.determines_pred_health()
-                strengh = self.setting.determines_strength()
+                hp = self.setting.determines_health(object_type)
+                strengh = self.setting.determines_strength(object_type)
                 obj = Predator(x, y, speed, hp, strengh)
             else:
                 raise ValueError(f"Unknown object type: {object_type}")

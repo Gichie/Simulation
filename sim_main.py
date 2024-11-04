@@ -30,9 +30,10 @@ class Simulation:
             self.pause_event.wait()  # Ожидание до установки флага
             self.next_step()
 
-    def next_step(self):
-        """Симуляция и рендеринг одного хода для всех существ"""
-        self.creature_move.moves()
+    def next_step(self, num_steps=1):
+        """Симуляция и рендеринг одного хода или переданное количество ходов для всех существ"""
+        for _ in range(num_steps):
+            self.creature_move.moves()
 
     def pause(self):
         '''Приостанавливаем симуляцию'''
@@ -59,3 +60,4 @@ class Simulation:
 if __name__ == '__main__':
     sim = Simulation()
     sim.start_simulation()
+    sim.next_step()

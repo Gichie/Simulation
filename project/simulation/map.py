@@ -22,4 +22,3 @@ class Map:
         if empty_coords:
             shuffle(empty_coords)
             return empty_coords[0]
-

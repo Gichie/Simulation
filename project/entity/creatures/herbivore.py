@@ -1,36 +1,36 @@
 from project.entity.creatures.creature import Creature
-from project.simulation.creating_objects import CreatingObjects
 from project.entity.static_objects.empty import Empty
 from project.entity.static_objects.grass import Grass
 from project.simulation.breadth_first_search import Bfs
-from project.simulation.map import Map
+from project.simulation.creating_objects import CreatingObjects
 
 
 class Herbivore(Creature):
     '''Травоядное. Стремится найти ресурс (траву), может потратить свой ход на движение в сторону травы, либо на её поглощение.'''
-    def __init__(self, x: int, y: int, speed: int, hp: int, engry: int = 1):
+
+    def __init__(self, x: int, y: int, speed: int, hp: int, engry: int = 1, **strength):
         super().__init__(x, y, speed, hp, engry)
         self.name = 'Herb'
 
-    def make_move(self, path_of_animal: list[tuple[int, int]], map: dict[tuple[int,  int], Creature]) -> None:
+    def make_move(self, path_of_animal: list[tuple[int, int]], map: dict[tuple[int, int], Creature]) -> None:
         # Определяем, действие: ест траву или движется
         if self.hp <= 0:
-            self.remove_herb(map)
-            return None
+            self.remove_creature(map)
+            return
 
-        print(f'Ходит {self} со скоростью {self.speed} и здоровьем {self.hp}/{self.full_hp}')
+        print(f'Ходит {self}{self.x, self.y} со скоростью {self.speed} и здоровьем {self.hp}/{self.full_hp}')
         self.hp -= self.engry
 
         if path_of_animal:
             print(f'Его путь: {path_of_animal}')
             if len(path_of_animal) == 2:
-                self.eat_grass(path_of_animal[1], map)
-            else:
+                self.eat_target(map[path_of_animal[1]], map)
+            elif len(path_of_animal) > 2:
                 self.move(path_of_animal, map)
         else:
             print(f'{self}{self.x, self.y} больше некуда идти :(')
 
-    def eat_grass(self, position: tuple[int, int], map: dict[tuple[int, int], Creature]) -> None:
+    '''def eat_grass(self, position: tuple[int, int], map: dict[tuple[int, int], Creature]) -> None:
         # Травяожное ест траву, восполняет здоровье до полного и трава удаляется с карты и из списка grasses
         x, y = position
         print(f'{self} съел Grass {self.x, self.y} -> {x, y}, восполнил здоровье и размножился')
@@ -39,38 +39,19 @@ class Herbivore(Creature):
         Grass.create_grass(map)
         self.hp = self.full_hp
         # Создание нового травоядного (размножение)
-        self.create_herbivore(map)
+        self.create_herbivore(map)'''
 
     def create_herbivore(self, map: dict[tuple[int, int], Creature]) -> None:
         '''Создание нового травоядного(механика размножения) после того, как оно съело траву'''
         coordinates_for_spawn = Bfs((self.x, self.y), map).bfs(' ')
         if coordinates_for_spawn:
             coordinates_for_spawn = coordinates_for_spawn[-1]
-            new_herbivore = Herbivore(*coordinates_for_spawn, self.setting.determines_speed(), self.setting.determines_herb_health())
+            new_herbivore = Herbivore(
+                *coordinates_for_spawn,
+                self.setting.determines_speed(),
+                self.setting.determines_health(self.name)
+            )
             map[(coordinates_for_spawn)] = new_herbivore
             CreatingObjects.moving_creatures.append(new_herbivore)
         else:
             print('Размножиться травоядному не удалось')
-
-    def remove_herb(self, map: dict[tuple[int, int], Creature]) -> None:
-        map[(self.x, self.y)] = Empty(self.x, self.y)
-        CreatingObjects.remove_creature(self.x, self.y)
-        print(f'{self}{self.x, self.y} is dead')
-
-        # Проверка, остались ли еще Травоядные
-        if self.is_creature_over():
-            self.spawn_new_herbivores(map)
-
-    def spawn_new_herbivores(self, map: dict[tuple[int, int], Creature]) -> None:
-        '''Создание нового травяодного, если все травяодные умерли'''
-        for _ in range(self.setting.count_herbivore):
-            coordinates = Map.collects_free_coordinates(map)
-            if coordinates:
-                new_herbivore = Herbivore(
-                    *coordinates,
-                    self.setting.determines_speed(),
-                    self.setting.determines_herb_health(),
-                )
-                map[coordinates] = new_herbivore
-                CreatingObjects.moving_creatures.append(new_herbivore)
-                print(f'Появился новый Herb в {coordinates}')
