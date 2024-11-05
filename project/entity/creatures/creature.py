@@ -8,7 +8,7 @@ from project.simulation.map import Map
 
 
 class Creature(Entity):
-    def __init__(self, x, y, speed: int, hp: int, engry: int):
+    def __init__(self, x: int, y: int, speed: int, hp: int, engry: int):
         super().__init__(x, y)
         self.speed = speed
         self.full_hp = hp

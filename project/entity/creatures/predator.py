@@ -1,4 +1,5 @@
 from project.entity.creatures.creature import Creature
+from project.entity.creatures.herbivore import Herbivore
 from project.setting import Setting
 
 
@@ -7,7 +8,7 @@ class Predator(Creature):
     Переместиться (чтобы приблизиться к жертве - травоядному)
     Атаковать травоядное. При этом количество HP травоядного уменьшается на силу атаки хищника. Если значение HP жертвы опускается до 0, травоядное исчезает'''
 
-    def __init__(self, x, y, speed: int, hp: int, strength: int, engry: int = 1):
+    def __init__(self, x: int, y: int, speed: int, hp: int, strength: int, engry: int = 1):
         super().__init__(x, y, speed, hp, engry)
         self.strength = strength
         self.name = "Pred"
@@ -35,7 +36,7 @@ class Predator(Creature):
         else:
             print(f"{self}{self.x, self.y} больше некуда идти :(")
 
-    def attacks_target(self, target):
+    def attacks_target(self, target: Herbivore):
         if self.strength >= target.hp:
             return True
         else:
