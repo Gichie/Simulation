@@ -2,7 +2,7 @@ from collections import deque
 
 
 class Bfs:
-    def __init__(self, start, map):
+    def __init__(self, start: tuple[int, int], map: dict[tuple[int, int], 'Creature']):
         self.queue = deque([start])
         self.visited = set()
         self.found_objects = dict()
@@ -10,7 +10,7 @@ class Bfs:
         self.start = start
         self.map = map
 
-    def bfs(self, goal):
+    def bfs(self, goal: str):
         while self.queue:
             current = self.queue.popleft()
             if current in self.visited:
@@ -26,7 +26,7 @@ class Bfs:
                     self.queue.append(neighbor)
                     self.parent[neighbor] = current
 
-    def construct_path(self, start, goal):
+    def construct_path(self, start: tuple[int, int], goal: tuple[int, int]) -> list[tuple[int, int]]:
         path = []
         current = goal
         while current != start:

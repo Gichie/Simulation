@@ -1,14 +1,14 @@
-from project.simulation.creating_objects import CreatingObjects
 from project.simulation.breadth_first_search import Bfs
+from project.simulation.creating_objects import CreatingObjects
 from project.simulation.move_counter import MoveCounter
 
 
 class CreatureMove:
-    def __init__(self, map, render):
+    def __init__(self, map: dict[tuple[int, int]], render: 'Render'):
         self.map = map
         self.render = render
 
-    def moves(self):
+    def moves(self) -> None:
         goals = {'Herb': 'Grss', 'Pred': 'Herb'}
         for creature in CreatingObjects.moving_creatures:
             print()

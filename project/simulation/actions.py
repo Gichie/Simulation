@@ -1,24 +1,26 @@
+from random import shuffle
+
 from project.entity.creatures.herbivore import Herbivore
 from project.entity.creatures.predator import Predator
 from project.entity.static_objects.grass import Grass
 from project.entity.static_objects.rock import Rock
 from project.entity.static_objects.tree import Tree
-from project.simulation.creating_objects import CreatingObjects
 from project.setting import Setting
-from random import shuffle
+from project.simulation.creating_objects import CreatingObjects
 
 
 class Actions:
     '''Список действий, исполняемых перед стартом симуляции или на каждом ходу '''
+
     def __init__(self, setting: Setting):
         self.setting = setting
-        self.coords = self.create_coords_creatures()
+        self.coords: list[tuple[int, int]] = self.create_coords_creatures()
 
-    def create_coords_creatures(self):
-        coords = [(i,j) for j in range(self.setting.height) for i in range(self.setting.width)]
+    def create_coords_creatures(self) -> list[tuple[int, int]]:
+        # Распределение координат в случайном порядке
+        coords = [(i, j) for j in range(self.setting.height) for i in range(self.setting.width)]
         shuffle(coords)
         return coords
-        # Отображение распределенных координат в случайном порядке
 
     def creature(self):
         self.create_object('Grss', self.setting.count_grass)
@@ -27,7 +29,7 @@ class Actions:
         self.create_object('Herb', self.setting.count_herbivore)
         self.create_object('Pred', self.setting.count_predator)
 
-    def create_object(self, object_type, count):
+    def create_object(self, object_type: str, count: int) -> None:
         for i in range(count):
             x, y = self.coords.pop()
             # Создание объекта в зависимости от переданного типа

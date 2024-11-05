@@ -1,4 +1,5 @@
 import threading
+
 from project.setting import Setting
 from project.simulation.actions import Actions
 from project.simulation.creating_objects import CreatingObjects
@@ -19,7 +20,7 @@ class Simulation:
         self.pause_event = threading.Event()  # Флаг для управления паузой
         self.render.display()
 
-    def start_simulation(self):
+    def start_simulation(self) -> None:
         """Запуск основного цикла симуляции с контролем паузы и потоком для команд"""
         self.pause_event.set()  # Устанавливаем событие для старта
 
@@ -30,22 +31,22 @@ class Simulation:
             self.pause_event.wait()  # Ожидание до установки флага
             self.next_step()
 
-    def next_step(self, num_steps=1):
+    def next_step(self, num_steps=1) -> None:
         """Симуляция и рендеринг одного хода или переданное количество ходов для всех существ"""
         for _ in range(num_steps):
             self.creature_move.moves()
 
-    def pause(self):
+    def pause(self) -> None:
         '''Приостанавливаем симуляцию'''
         print("Симуляция приостановлена.")
         self.pause_event.clear()
 
-    def resume(self):
+    def resume(self) -> None:
         '''Возобновляем симуляцию'''
         print("Симуляция возобновлена.")
         self.pause_event.set()
 
-    def wait_for_commands(self):
+    def wait_for_commands(self) -> None:
         '''Отслеживаем ввод команд для управления симуляцией'''
         while True:
             command = input("Введите команду ('pause' или 'resume'): ").strip().lower()
@@ -60,4 +61,3 @@ class Simulation:
 if __name__ == '__main__':
     sim = Simulation()
     sim.start_simulation()
-    sim.next_step()
