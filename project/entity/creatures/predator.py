@@ -1,7 +1,5 @@
 from project.entity.creatures.creature import Creature
 from project.setting import Setting
-from project.simulation.breadth_first_search import Bfs
-from project.simulation.creating_objects import CreatingObjects
 
 
 class Predator(Creature):
