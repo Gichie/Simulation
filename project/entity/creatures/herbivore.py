@@ -1,8 +1,4 @@
 from project.entity.creatures.creature import Creature
-from project.entity.static_objects.empty import Empty
-from project.entity.static_objects.grass import Grass
-from project.simulation.breadth_first_search import Bfs
-from project.simulation.creating_objects import CreatingObjects
 
 
 class Herbivore(Creature):
@@ -29,18 +25,3 @@ class Herbivore(Creature):
                 self.move(path_of_animal, map)
         else:
             print(f'{self}{self.x, self.y} больше некуда идти :(')
-
-    def create_herbivore(self, map: dict[tuple[int, int], Creature]) -> None:
-        '''Создание нового травоядного(механика размножения) после того, как оно съело траву'''
-        coordinates_for_spawn = Bfs((self.x, self.y), map).bfs(' ')
-        if coordinates_for_spawn:
-            coordinates_for_spawn = coordinates_for_spawn[-1]
-            new_herbivore = Herbivore(
-                *coordinates_for_spawn,
-                self.setting.determines_speed(),
-                self.setting.determines_health(self.name)
-            )
-            map[(coordinates_for_spawn)] = new_herbivore
-            CreatingObjects.moving_creatures.append(new_herbivore)
-        else:
-            print('Размножиться травоядному не удалось')

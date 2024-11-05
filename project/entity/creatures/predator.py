@@ -37,25 +37,6 @@ class Predator(Creature):
         else:
             print(f"{self}{self.x, self.y} больше некуда идти :(")
 
-    def create_predator(self, map: dict[tuple[int, int], Creature]) -> None:
-        '''Создание нового хищника(механика размножения) после того, как он съел травоядное'''
-        if self.amount_eaten > self.amount_eaten_for_offspring:
-            self.amount_eaten = 0
-            coordinates_for_spawn: tuple[int, int] = Bfs((self.x, self.y), map).bfs(' ')
-            if coordinates_for_spawn:
-                coordinates_for_spawn = coordinates_for_spawn[-1]
-                new_predator = Predator(
-                    *coordinates_for_spawn,
-                    self.setting.determines_speed(),
-                    self.setting.determines_health(self.name),
-                    self.setting.determines_strength(self.name)
-                )
-                map[(coordinates_for_spawn)] = new_predator
-                CreatingObjects.moving_creatures.append(new_predator)
-                print(f'{self} Размножился')
-            else:
-                print('Размножиться Хищнику не удалось')
-
     def attacks_target(self, target):
         if self.strength >= target.hp:
             return True

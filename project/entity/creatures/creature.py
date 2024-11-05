@@ -1,15 +1,15 @@
-from project.entity.entity import Entity
 from abc import abstractmethod
+from project.entity.entity import Entity
 from project.entity.static_objects.empty import Empty
-from project.entity.static_objects.grass import Grass
 from project.setting import Setting
+from project.simulation.breadth_first_search import Bfs
 from project.simulation.creating_objects import CreatingObjects
 from project.simulation.map import Map
 
 
 class Creature(Entity):
-    def __init__(self, x,y, speed: int, hp: int, engry: int):
-        super().__init__(x,y)
+    def __init__(self, x, y, speed: int, hp: int, engry: int):
+        super().__init__(x, y)
         self.speed = speed
         self.full_hp = hp
         self.hp = hp
@@ -40,9 +40,11 @@ class Creature(Entity):
         CreatingObjects.remove_creature(self.x, self.y)
         print(f'{self}{self.x, self.y} is dead')
         if self.is_creature_over():
-            self.spawn_new_creature(map, self.__class__, strength={'strength': self.setting.determines_strength(self.name)})
+            self.spawn_new_creature(map, self.__class__,
+                                    strength={'strength': self.setting.determines_strength(self.name)})
 
-    def spawn_new_creature(self, map: dict[tuple[int, int], 'Creature'], type_of_creature, strength: dict = None) -> None:
+    def spawn_new_creature(self, map: dict[tuple[int, int], 'Creature'], type_of_creature,
+                           strength: dict = None) -> None:
         '''Создание новых существ, если все существа одного вида умерли'''
         strength = strength or {}
         for _ in range(self.setting.count_creatures(self.name)):
@@ -67,18 +69,39 @@ class Creature(Entity):
         if self.name == 'Herb':
             target.remove_grass(map)
             self.hp = self.full_hp
-            print(f'{self}{self.x, self.y} съел Grass, восполнил здоровье и размножился')
+            print(f'{self}{self.x, self.y} съел Grass и восполнил здоровье')
             # Создание нового травоядного (размножение)
-            self.create_herbivore(map)
+            self.create_offspring(map, type(self))
+
         elif self.name == 'Pred':
             if self.attacks_target(target):
                 print(f'{self}{self.x, self.y} съел {target} и набрался здоровья')
                 target.remove_creature(map)
                 self.hp = self.full_hp
                 self.amount_eaten += 1
-                self.create_predator(map)
+                if self.amount_eaten >= self.amount_eaten_for_offspring:
+                    self.create_offspring(map, type(self), can_spawn=True)
+                    self.amount_eaten = 0
             else:
                 print(f'{self}{self.x, self.y} атакует {target}, осталось {target.hp} здоровья')
 
+    def create_offspring(self, map: dict[tuple[int, int], 'Creature'], creature_class, can_spawn: bool = True) -> None:
+        '''Создание нового существа(механика размножения)'''
+        if not can_spawn:  # Если размножение не разрешено, прерываем метод
+            return
+        coordinates_for_spawn: tuple[int, int] = Bfs((self.x, self.y), map).bfs(' ')
+        if coordinates_for_spawn:
+            coordinates_for_spawn = coordinates_for_spawn[-1]
+            offspring = creature_class(
+                *coordinates_for_spawn,
+                self.setting.determines_speed(),
+                self.setting.determines_health(self.name),
+                strength=self.setting.determines_strength(self.name) if self.name == "Pred" else 0
+            )
+            map[coordinates_for_spawn] = offspring
+            CreatingObjects.moving_creatures.append(offspring)
+            print(f'{self.name} размножился {coordinates_for_spawn}')
+        else:
+            print('Размножиться не удалось')
     def __str__(self) -> str:
         return self.name

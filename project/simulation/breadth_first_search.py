@@ -1,5 +1,6 @@
 from collections import deque
 
+
 class Bfs:
     def __init__(self, start, map):
         self.queue = deque([start])
@@ -17,9 +18,9 @@ class Bfs:
             self.visited.add(current)
             if self.map[current].name == goal:
                 # Проверка на достижение цели
-                return self.construct_path(self.start, current)                    # Построение пути
+                return self.construct_path(self.start, current)  # Построение пути
 
-            for x,y in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
+            for x, y in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
                 neighbor = (current[0] + x, current[1] + y)
                 if neighbor in self.map and neighbor not in self.visited and self.map[neighbor].name in (' ', goal):
                     self.queue.append(neighbor)
@@ -31,17 +32,8 @@ class Bfs:
         while current != start:
             path.append(current)
             current = self.parent.get(current)
-            if current is None:                              # Если мы не можем найти путь
+            if current is None:  # Если мы не можем найти путь
                 return None
         path.append(start)
         path.reverse()
         return path
-
-
-
-
-
-
-    
-
-
