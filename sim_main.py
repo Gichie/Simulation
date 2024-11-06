@@ -16,7 +16,7 @@ class Simulation:
 
         self.map = Map(setting.width, setting.height).map
         self.render = Render(setting.width, setting.height, self.map)
-        self.creature_move = CreatureMove(self.map, self.render)
+        self.creature_move = CreatureMove(self.map, self.render, setting)
         self.pause_event = threading.Event()  # Флаг для управления паузой
         self.render.display()
 

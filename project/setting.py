@@ -5,13 +5,13 @@ class Setting:
     '''Настройка симуляции'''
 
     def __init__(self):
-        self.width = 11
-        self.height = 10
-        self.count_grass = 6
-        self.count_rock = 2
+        self.width = 3
+        self.height = 3
+        self.count_grass = 4
+        self.count_rock = 0
         self.count_tree = self.count_rock
-        self.count_predator = 2
-        self.count_herbivore = self.count_predator * 7
+        self.count_predator = 1
+        self.count_herbivore = self.count_predator * 2
         self.speed_range = (1, 2)
         self.herb_health = (14, 65)
         self.pred_health = (3, 26)

@@ -1,5 +1,4 @@
 from project.entity.entity import Entity
-from project.entity.static_objects.empty import Empty
 from project.simulation.map import Map
 
 
@@ -10,8 +9,8 @@ class Grass(Entity):
         super().__init__(x, y)
         self.name = 'Grss'
 
-    def __str__(self):
-        return 'Grss'
+    '''def __str__(self):
+        return 'Grss'''
 
     @classmethod
     def create_grass(cls, map: dict[tuple[int, int], Entity]) -> None:
@@ -22,5 +21,5 @@ class Grass(Entity):
             print(f'Трава выросла {coords}')
 
     def remove_grass(self, map: dict[tuple[int, int], 'Grass']) -> None:
-        map[(self.x, self.y)] = Empty(self.x, self.y)
+        del map[(self.x, self.y)]
         self.create_grass(map)
