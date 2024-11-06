@@ -1,6 +1,6 @@
 from abc import abstractmethod
+
 from project.entity.entity import Entity
-from project.entity.static_objects.empty import Empty
 from project.setting import Setting
 from project.simulation.breadth_first_search import Bfs
 from project.simulation.creating_objects import CreatingObjects
@@ -33,10 +33,10 @@ class Creature(Entity):
         print(f'{self.name} походил {old_position} -> {self.x, self.y}')
 
         # Обновление старого положения, если оно не пустое
-        map[old_position] = Empty(*old_position)
+        del map[old_position]
 
     def remove_creature(self, map: dict[tuple[int, int], 'Creature']) -> None:
-        map[(self.x, self.y)] = Empty(self.x, self.y)
+        del map[(self.x, self.y)]
         CreatingObjects.remove_creature(self.x, self.y)
         print(f'{self}{self.x, self.y} is dead')
         if self.is_creature_over():
@@ -67,9 +67,9 @@ class Creature(Entity):
     def eat_target(self, target, map: dict[tuple[int, int], 'Creature']) -> None:
         '''Универсальный метод поглощения цели (Травы или Травоядного)'''
         if self.name == 'Herb':
+            print(f'{self}{self.x, self.y} съел Grass и восполнил здоровье')
             target.remove_grass(map)
             self.hp = self.full_hp
-            print(f'{self}{self.x, self.y} съел Grass и восполнил здоровье')
             # Создание нового травоядного (размножение)
             self.create_offspring(map, type(self))
 
@@ -89,7 +89,7 @@ class Creature(Entity):
         '''Создание нового существа(механика размножения)'''
         if not can_spawn:  # Если размножение не разрешено, прерываем метод
             return
-        coordinates_for_spawn: tuple[int, int] = Bfs((self.x, self.y), map).bfs(' ')
+        coordinates_for_spawn = Bfs((self.x, self.y), map, self.setting).bfs(type(None))
         if coordinates_for_spawn:
             coordinates_for_spawn = coordinates_for_spawn[-1]
             offspring = creature_class(
@@ -103,5 +103,6 @@ class Creature(Entity):
             print(f'{self.name} размножился {coordinates_for_spawn}')
         else:
             print('Размножиться не удалось')
+
     def __str__(self) -> str:
         return self.name
