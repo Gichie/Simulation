@@ -26,11 +26,6 @@ class Bfs:
             for x, y in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
                 neighbor = (current[0] + x, current[1] + y)
                 if neighbor[0] >= 0 and neighbor[1] >= 0 and neighbor[0] < self.setting.width and neighbor[1] < self.setting.height:
-                    '''print(type(self.map.get(neighbor, None)))
-                    print(type(None)|goal)
-                    print(type(self.map.get(neighbor, None)) in (type(None), goal))'''
-
-
                     if neighbor not in self.visited and type(self.map.get(neighbor, None)) in (type(None), goal):
                         self.queue.append(neighbor)
                         self.parent[neighbor] = current

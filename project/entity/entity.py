@@ -8,8 +8,8 @@ class Entity(ABC):
         self.x = x
         self.y = y
 
-    '''def __repr__(self):
-        return f'{type(self).__name__}({self.x}, {self.y})'''
+    def __repr__(self):
+        return f'{type(self).__name__}({self.x}, {self.y})'
 
-    '''def __str__(self):
-        return self.name'''
+    def __str__(self):
+        return self.name

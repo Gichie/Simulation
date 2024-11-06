@@ -9,8 +9,8 @@ class Grass(Entity):
         super().__init__(x, y)
         self.name = 'Grss'
 
-    '''def __str__(self):
-        return 'Grss'''
+    def __str__(self):
+        return 'Grss'
 
     @classmethod
     def create_grass(cls, map: dict[tuple[int, int], Entity]) -> None:
