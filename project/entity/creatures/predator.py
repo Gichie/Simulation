@@ -11,21 +11,21 @@ class Predator(Creature):
     def __init__(self, x: int, y: int, speed: int, hp: int, strength: int, engry: int = 1):
         super().__init__(x, y, speed, hp, engry)
         self.strength = strength
-        self.name = "Pred"
+        self._name = "Pred"
         self.amount_eaten = 0
-        self.setting: Setting
-        self.amount_eaten_for_offspring = self.setting.amount_eaten_for_offspring
+        self._setting: Setting
+        self.amount_eaten_for_offspring = self._setting.amount_eaten_for_offspring
 
     def make_move(self, path_of_animal: list[tuple[int, int]], map: dict[tuple[int, int], Creature]) -> None:
         # Определяем, действие: ест травоядного или движется
         print(
-            f'Ходит {self}{self.x, self.y}, Скорость: {self.speed}, Здоровье: {self.hp}/{self.full_hp}, Сила: {self.strength}, Кол-во съеденных: {self.amount_eaten}')
+            f'Ходит {self}{self.x, self.y}, Скорость: {self._speed}, Здоровье: {self._hp}/{self._full_hp}, Сила: {self.strength}, Кол-во съеденных: {self.amount_eaten}')
         # Голодание
-        if self.hp <= 0:
+        if self._hp <= 0:
             self.remove_creature(map)
             return
         else:
-            self.hp -= self.engry
+            self._hp -= self._engry
 
         if path_of_animal:
             print(f'Его путь: {path_of_animal}')
@@ -37,8 +37,8 @@ class Predator(Creature):
             print(f"{self}{self.x, self.y} больше некуда идти :(")
 
     def attacks_target(self, target: Herbivore):
-        if self.strength >= target.hp:
+        if self.strength >= target._hp:
             return True
         else:
-            target.hp -= self.strength
+            target._hp -= self.strength
             return False

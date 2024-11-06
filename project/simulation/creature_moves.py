@@ -17,7 +17,7 @@ class CreatureMove:
         for creature in CreatingObjects.moving_creatures:
             print()
             animal = Bfs((creature.x, creature.y), self.map, self.setting)
-            self.__path_of_animal = animal.bfs(goals[creature.name])
+            self.__path_of_animal = animal.bfs(goals[creature._name])
             creature.make_move(self.__path_of_animal, self.map)
             self.render.display()
         print(CreatingObjects.moving_creatures)

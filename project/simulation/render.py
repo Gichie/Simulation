@@ -26,13 +26,13 @@ class Render:
                     cell_content = ' '.center(cell_width)
                 elif isinstance(creature, Herbivore):
                     # Если это Herbivore, добавляем желтый цвет
-                    cell_content = f"{Fore.YELLOW}{creature.name.center(cell_width)}{Style.RESET_ALL}"
+                    cell_content = f"{Fore.YELLOW}{creature._name.center(cell_width)}{Style.RESET_ALL}"
                 elif isinstance(creature, Grass):
-                    cell_content = f"{Fore.GREEN}{creature.name.center(cell_width)}{Style.RESET_ALL}"
+                    cell_content = f"{Fore.GREEN}{creature._name.center(cell_width)}{Style.RESET_ALL}"
                 elif isinstance(creature, Predator):
-                    cell_content = f"{Fore.RED}{creature.name.center(cell_width)}{Style.RESET_ALL}"
+                    cell_content = f"{Fore.RED}{creature._name.center(cell_width)}{Style.RESET_ALL}"
                 else:
-                    cell_content = self.map[(x, y)].name.center(cell_width)
+                    cell_content = self.map[(x, y)]._name.center(cell_width)
                 row.append(cell_content)
             grid.append(" | ".join(row))  # Объединяем строку через '|'
 

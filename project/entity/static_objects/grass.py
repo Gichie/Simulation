@@ -7,7 +7,7 @@ class Grass(Entity):
 
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
-        self.name = 'Grss'
+        self._name = 'Grss'
 
     def __str__(self):
         return 'Grss'

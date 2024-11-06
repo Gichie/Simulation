@@ -5,4 +5,4 @@ class Rock(Entity):
     pass
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
-        self.name: str = 'Rock'
+        self._name: str = 'Rock'

@@ -6,16 +6,16 @@ class Herbivore(Creature):
 
     def __init__(self, x: int, y: int, speed: int, hp: int, engry: int = 1, **strength):
         super().__init__(x, y, speed, hp, engry)
-        self.name = 'Herb'
+        self._name = 'Herb'
 
     def make_move(self, path_of_animal: list[tuple[int, int]], map: dict[tuple[int, int], Creature]) -> None:
         # Определяем, действие: ест траву или движется
-        print(f'Ходит {self}{self.x, self.y} со скоростью {self.speed} и здоровьем {self.hp}/{self.full_hp}')
-        if self.hp <= 0:
+        print(f'Ходит {self}{self.x, self.y} со скоростью {self._speed} и здоровьем {self._hp}/{self._full_hp}')
+        if self._hp <= 0:
             self.remove_creature(map)
             return
 
-        self.hp -= self.engry
+        self._hp -= self._engry
 
         if path_of_animal:
             print(f'Его путь: {path_of_animal}')

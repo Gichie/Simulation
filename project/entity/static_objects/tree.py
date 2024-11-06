@@ -5,4 +5,4 @@ class Tree(Entity):
     pass
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
-        self.name: str = 'Tree'
+        self._name: str = 'Tree'
