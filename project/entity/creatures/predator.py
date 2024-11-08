@@ -31,17 +31,17 @@ class Predator(Creature):
 
         Parameters:
         -----------
-        x : int
+        @param x: int
             X-coordinate of the predator's initial position.
-        y : int
+        @param y: int
             Y-coordinate of the predator's initial position.
-        speed : int
+        @param speed : int
             Movement speed of the predator.
-        hp : int
+        @param hp : int
             Maximum health points of the predator.
-        strength : int
+        @param strength : int
             Attack strength of the predator, used to decrease the HP of herbivores.
-        hungry : int, optional
+        @param hungry : int, optional
             Hunger level affecting health reduction over time (default is 1).
         """
         super().__init__(x, y, speed, hp, hungry)
@@ -57,9 +57,9 @@ class Predator(Creature):
 
         Parameters:
         -----------
-        path_of_animal : list[tuple[int, int]]
+        @param path_of_animal : list[tuple[int, int]]
             List of coordinates representing the path to the nearest herbivore.
-        map : dict[tuple[int, int], Creature]
+        @param map : dict[tuple[int, int], Creature]
             Dictionary representing the map with coordinates as keys and creatures or resources as values.
 
         Notes:
@@ -92,7 +92,7 @@ class Predator(Creature):
 
         Parameters:
         -----------
-        path_of_animal : list[tuple[int, int]]
+        @param path_of_animal : list[tuple[int, int]]
             List of coordinates representing the path to the target herbivore.
 
         Returns:
@@ -108,7 +108,7 @@ class Predator(Creature):
 
         Parameters:
         -----------
-        target : Herbivore
+        @param target : Herbivore
             The target herbivore to attack.
 
         Returns:

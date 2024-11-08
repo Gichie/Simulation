@@ -11,73 +11,10 @@ class Creature(Entity):
     """
     The Creature class serves as a base class for all moving entities in the simulation, such as herbivores and predators.
     It manages the creature's attributes, movement, health, and interaction with other entities on the map.
-
-    Attributes:
-    -----------
-    _speed : int
-        The movement speed of the creature, determining how many steps it can move.
-    _full_hp : int
-        The maximum health points (HP) the creature can have.
-    _hp : int
-        The current health points of the creature.
-    _hungry : int
-        The hunger level, affecting health reduction over time.
-    _setting : Setting
-        An instance of the Setting class, containing various simulation settings.
-    _name : str or None
-        The name of the creature, used to identify its type.
-
-    Methods:
-    --------
-    make_move() -> None
-        An abstract method that defines how the creature makes a move (to be implemented by subclasses).
-
-    move(path_of_animal: list[tuple[int, int]], map: dict[tuple[int, int], 'Creature']) -> None
-        Moves the creature along the specified path, updating the map as it changes position.
-
-    _remove_creature(map: dict[tuple[int, int], 'Creature']) -> None
-        Removes the creature from the map if it dies, and checks if new creatures of this type should spawn.
-
-    spawn_new_creature(map: dict[tuple[int, int], 'Creature'], type_of_creature, strength: dict = None) -> None
-        Spawns new creatures of this type if none remain in the simulation.
-
-    is_creature_over() -> bool
-        Checks if there are any creatures of the same type remaining on the map.
-
-    eat_target(target, map: dict[tuple[int, int], 'Creature']) -> None
-        Allows the creature to eat a target (e.g., Grass for Herbivores or Herbivore for Predators),
-        restoring health and potentially triggering offspring creation.
-
-    create_offspring(map: dict[tuple[int, int], 'Creature'], creature_class, can_spawn: bool = True) -> None
-        Handles the spawning of offspring, if permitted and if there are available coordinates.
-
-    _reduces_health() -> None
-        Decreases the creature's health by its hunger level, simulating the effect of starvation.
-
-    _is_starving() -> bool
-        Checks if the creature's health has dropped to zero or below, indicating starvation.
-
-    __str__() -> str
-        Returns the creature's name as its string representation.
     """
 
     def __init__(self, x: int, y: int, speed: int, hp: int, hungry: int):
-        """
-        Initializes the Creature with specified coordinates, speed, health, and hunger level.
-
-        Parameters:
-        -----------
-        x : int
-            The X-coordinate of the creature.
-        y : int
-            The Y-coordinate of the creature.
-        speed : int
-            The movement speed of the creature.
-        hp : int
-            The initial and maximum health points of the creature.
-        hungry : int
-            The hunger level of the creature, determining how much health decreases over time.
-        """
+        """Initializes the Creature with specified coordinates, speed, health, and hunger level."""
         super().__init__(x, y)
         self._speed = speed
         self._full_hp = hp
@@ -162,9 +99,9 @@ class Creature(Entity):
 
     def eat_target(self, target, map: dict[tuple[int, int], 'Creature']) -> None:
         """
-        Allows a creature to consume a target, either by restoring health and spawning offspring if the conditions are met.
-        For herbivores, there must be an empty space on the map, and for predators,
-        there must be an empty space and a specified number of creatures consumed.
+        Allows the creature to consume a target based on its type. Herbivores consume plants (Grass),
+        restoring full health and potentially spawning offspring. Predators consume other creatures,
+        restoring health and tracking the number of eaten targets for offspring spawning.
 
         Parameters:
         -----------
@@ -174,23 +111,49 @@ class Creature(Entity):
             The map of creatures and resources.
         """
         if self._name == 'Herb':
-            print(f'{self}{self.x, self.y} съел Grass и восполнил здоровье')
-            target.remove_and_spawn_grass(map)
-            self._hp = self._full_hp
-            # Создание нового травоядного (размножение)
-            self.create_offspring(map, type(self))
-
+            self.eat_grass(target, map)
         elif self._name == 'Pred':
-            if self._attacks_target(target):
-                print(f'{self}{self.x, self.y} съел {target} и набрался здоровья')
-                target._remove_creature(map)
-                self._hp = self._full_hp
-                self._amount_eaten += 1
-                if self._amount_eaten >= self._amount_eaten_for_offspring:
-                    self.create_offspring(map, type(self), can_spawn=True)
-                    self._amount_eaten = 0
-            else:
-                print(f'{self}{self.x, self.y} атакует {target}, осталось {target._hp} здоровья')
+            self.attack_or_eat(target, map)
+
+    def eat_grass(self, target: 'Grass', map: dict[tuple[int, int], 'Creature']) -> None:
+        """
+        Allows a herbivorous creature to consume a plant entity (e.g., Grass), restoring full health.
+        If conditions allow, the herbivore may also spawn offspring.
+
+        Parameters:
+        -----------
+        target : Entity
+            The plant entity to be consumed.
+        map : dict[tuple[int, int], 'Creature']
+            The map where the plant is located, which will be updated after consumption.
+        """
+        target.remove_and_spawn_grass(map)
+        self._hp = self._full_hp
+        self.create_offspring(map, type(self))
+        print(f'{self}{self.x, self.y} съел Grass и восполнил здоровье')
+
+    def attack_or_eat(self, target: 'Herbivore', map: dict[tuple[int, int], 'Creature']) -> None:
+        """
+        Allows a predatory creature to attack and consume a target entity, restoring health.
+        Tracks the number of consumed targets for determining if offspring should be spawned.
+
+        Parameters:
+        -----------
+        target : Creature
+            The target entity to be attacked and consumed.
+        map : dict[tuple[int, int], 'Creature']
+            The map of creatures where the target's position will be cleared after consumption.
+        """
+        if self._attacks_target(target):
+            print(f'{self}{self.x, self.y} съел {target} и набрался здоровья')
+            target._remove_creature(map)
+            self._hp = self._full_hp
+            self._amount_eaten += 1
+            if self._amount_eaten >= self._amount_eaten_for_offspring:
+                self.create_offspring(map, type(self), can_spawn=True)
+                self._amount_eaten = 0
+        else:
+            print(f'{self}{self.x, self.y} атакует {target}, осталось {target._hp} здоровья')
 
     def create_offspring(self, map: dict[tuple[int, int], 'Creature'], creature_class, can_spawn: bool = True) -> None:
         """Creates offspring if there are free coordinates available."""

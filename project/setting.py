@@ -68,18 +68,18 @@ class Setting:
             pred_strength = (8, 53)
             _amount_eaten_for_offspring = 8
         """
-        self.width = 15
+        self.width = 16
         self.height = 15
-        self.count_grass = 4
-        self.count_rock = 8
+        self.count_grass = 3
+        self.count_rock = 9
         self.count_tree = self.count_rock
-        self.count_predator = 8
+        self.count_predator = 9
         self.count_herbivore = self.count_predator * 1
         self.speed_range = (1, 2)
-        self.herb_health = (7, 65)
-        self.pred_health = (8, 22)
-        self.pred_strength = (8, 53)
-        self._amount_eaten_for_offspring = 8
+        self.herb_health = (6, 65)
+        self.pred_health = (9, 22)
+        self.pred_strength = (9, 53)
+        self._amount_eaten_for_offspring = 7
 
     def determines_speed(self) -> int:
         """
