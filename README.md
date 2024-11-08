@@ -17,48 +17,9 @@
 
 - **`Grass`**: Класс, представляющий траву — ресурс, который поедается травоядными. Трава может расти на карте и восстанавливаться после того, как её поедают.
 
-    ```python
-    class Grass(Entity):
-        """
-        Represents grass as a resource that herbivores consume.
-        The grass can grow back after being eaten.
-        """
-        def __init__(self, x: int, y: int):
-            super().__init__(x, y)
-            self._name = "Grass"
-
-        def regrow(self) -> None:
-            """
-            Regrows the grass after it has been eaten.
-            """
-            pass
-    ```
-
 - **`Tree`**: Класс, представляющий дерево — неподвижный объект, который может служить преградой для движения существ.
 
-    ```python
-    class Tree(Entity):
-        """
-        Represents a tree on the map, which acts as an obstacle for movement.
-        Trees do not move or interact with creatures.
-        """
-        def __init__(self, x: int, y: int):
-            super().__init__(x, y)
-            self._name = "Tree"
-    ```
-
 - **`Rock`**: Класс, представляющий скалу — также неподвижное препятствие, которое нельзя преодолеть.
-
-    ```python
-    class Rock(Entity):
-        """
-        Represents a rock as an impassable obstacle on the map.
-        Creatures cannot move through rocks.
-        """
-        def __init__(self, x: int, y: int):
-            super().__init__(x, y)
-            self._name = "Rock"
-    ```
 
 ### Ключевые компоненты симуляции
 
@@ -71,17 +32,13 @@
 
 Для запуска проекта требуется:
 - Python 3.7 или выше
-- Необходимые библиотеки (если есть) можно установить командой:
-    ```bash
-    pip install -r requirements.txt
-    ```
 
 ## Начало работы
 
 1. **Клонируйте репозиторий**:
     ```bash
-    git clone https://github.com/yourusername/simulation-of-creatures.git
-    cd simulation-of-creatures
+    git clone https://github.com/Gichie/Simulation.git
+    cd Simulation
     ```
 
 2. **Запустите симуляцию**:
@@ -98,21 +55,3 @@
 1. **Управление симуляцией**:
     - Запустите симуляцию с помощью метода `start_simulation()` в классе `Simulation`.
     - Управляйте потоком симуляции (пауза/возобновление) и наблюдайте за поведением существ в реальном времени.
-
-2. **Добавление новых существ**:
-    - Расширьте базовый класс `Creature`, чтобы добавить новый тип существа.
-    - Реализуйте уникальное поведение, определив абстрактный метод `make_move`.
-
-## Пример
-
-Чтобы добавить новое существо (например, **Всеядное**), создайте класс, наследующий `Creature`, и добавьте логику его поведения. Всеядное может, например:
-1. Искать как траву, так и травоядных.
-2. Перемещаться к ближайшему ресурсу и потреблять его.
-
-```python
-from project.entity.creatures.creature import Creature
-
-class Omnivore(Creature):
-    def make_move(self, path_of_animal, map):
-        # Определите конкретную логику движения и взаимодействия
-        pass
